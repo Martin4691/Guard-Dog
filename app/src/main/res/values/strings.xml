@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Guard Dog</string>
+    <string name="prefs_file">com.example.guarddog.PREFERENCES_FILE_KEY</string>
 </resources>

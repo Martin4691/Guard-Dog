@@ -1,16 +1,31 @@
 package com.example.guarddog
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.auth.FirebaseAuth
+import android.widget.LinearLayout
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.tasks.Task
+import com.google.firebase.auth.AuthCredential
+import com.google.firebase.auth.GoogleAuthCredential
+import com.google.firebase.auth.GoogleAuthProvider
 import java.nio.file.attribute.AclEntry.Builder
 
 class AuthenticationActivity : AppCompatActivity() {
+    private val GOOGLE_SIGN_IN = 100
+
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.Theme_GuardDog)
 
@@ -18,19 +33,40 @@ class AuthenticationActivity : AppCompatActivity() {
         setContentView(R.layout.activity_authentication)
 
         // Analytics Event:
-        var analytics:FirebaseAnalytics = FirebaseAnalytics.getInstance(this)
-        var bundle = Bundle()
+        val analytics:FirebaseAnalytics = FirebaseAnalytics.getInstance(this)
+        val bundle = Bundle()
         bundle.putString("autenticacion", "Pantalla de Autenticación")
         analytics.logEvent("InitScreen",bundle)
 
         //Setup
         setup()
+        session()
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        val authLayout = findViewById<LinearLayout>(R.id.authLayout)
+        authLayout.visibility = View.VISIBLE
+    }
+
+    private fun session() {
+        val authLayout = findViewById<LinearLayout>(R.id.authLayout)
+        val prefs: SharedPreferences? = getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE)
+        val email: String? = prefs?.getString("email", null)
+        val provider: String? = prefs?.getString("provider", null)
+
+        if(email != null && provider != null) {
+            authLayout.visibility = View.INVISIBLE
+            goToPrincipal(email, ProviderType.valueOf(provider))
+        }
     }
 
     private fun setup() {
         title = "¡BIENVENIDO A GUARD DOG!"
         val loginButton = findViewById<Button>(R.id.loginButton)
         val signupButton = findViewById<Button>(R.id.signupButton)
+        val googleButton = findViewById<Button>(R.id.googleButton)
         val emailEditText = findViewById<EditText>(R.id.emailEditText)
         val passwordEditText = findViewById<EditText>(R.id.passwordEditText)
 
@@ -59,6 +95,16 @@ class AuthenticationActivity : AppCompatActivity() {
                 }
             }
         }
+
+        googleButton.setOnClickListener {
+            // Configuracion
+            val googleConf: GoogleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestIdToken(getString(R.string.default_web_client_id)).requestEmail().build()
+            val googleClient: GoogleSignInClient = GoogleSignIn.getClient(this, googleConf)
+
+            googleClient.signOut()
+
+            startActivityForResult(googleClient.signInIntent, GOOGLE_SIGN_IN)
+        }
     }
 
     private fun showAlert() {
@@ -78,4 +124,29 @@ class AuthenticationActivity : AppCompatActivity() {
         startActivity(principalIntent)
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if(requestCode == GOOGLE_SIGN_IN) {
+            val task:Task<GoogleSignInAccount> = GoogleSignIn.getSignedInAccountFromIntent(data)
+
+            try {
+                val account: GoogleSignInAccount? = task.getResult(ApiException::class.java)
+
+                if(account != null) {
+                    val credential: AuthCredential = GoogleAuthProvider.getCredential(account.idToken, null)
+
+                    FirebaseAuth.getInstance().signInWithCredential(credential).addOnCompleteListener {
+                        if (it.isSuccessful) {
+                            goToPrincipal(account.email ?: "No email in account.", ProviderType.GOOGLE)
+                        } else {
+                            showAlert()
+                        }
+                    }
+                }
+            } catch(error: ApiException) {
+                showAlert()
+            }
+        }
+    }
 }

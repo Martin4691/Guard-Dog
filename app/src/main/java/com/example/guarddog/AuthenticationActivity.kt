@@ -19,9 +19,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthCredential
-import com.google.firebase.auth.GoogleAuthCredential
 import com.google.firebase.auth.GoogleAuthProvider
-import java.nio.file.attribute.AclEntry.Builder
+
 
 class AuthenticationActivity : AppCompatActivity() {
     private val GOOGLE_SIGN_IN = 100
@@ -45,7 +44,6 @@ class AuthenticationActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-
         val authLayout = findViewById<LinearLayout>(R.id.authLayout)
         authLayout.visibility = View.VISIBLE
     }
@@ -97,7 +95,6 @@ class AuthenticationActivity : AppCompatActivity() {
         }
 
         googleButton.setOnClickListener {
-            // Configuracion
             val googleConf: GoogleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestIdToken(getString(R.string.default_web_client_id)).requestEmail().build()
             val googleClient: GoogleSignInClient = GoogleSignIn.getClient(this, googleConf)
 

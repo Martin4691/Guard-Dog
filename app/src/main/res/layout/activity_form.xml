@@ -6,4 +6,137 @@
     android:layout_height="match_parent"
     tools:context=".FormActivity">
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/labelDogTV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#EAE7E7"
+                android:text="Nombre del perro:"
+                android:textAlignment="textStart" />
+
+            <EditText
+                android:id="@+id/editTextTextPersonName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:text="Escriba el nombre del perro..."
+                tools:ignore="TouchTargetSizeCheck" />
+
+            <TextView
+                android:id="@+id/labelOwnerTV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#EAE7E7"
+                android:text="Nombre del dueño:" />
+
+            <EditText
+                android:id="@+id/editTextTextPersonName2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:text="Escriba su nombre..."
+                tools:ignore="TouchTargetSizeCheck" />
+
+            <TextView
+                android:id="@+id/labelEmailTV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#EAE7E7"
+                android:text="Email de contacto:" />
+
+            <TextView
+                android:id="@+id/labelEmailLogInTV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="AQUI SE PONDRÁ EL EMAIL CON EL QUE SE INICIÓ SESION" />
+
+            <TextView
+                android:id="@+id/labelTelTV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#EAE7E7"
+                android:text="Teléfono de contacto:" />
+
+            <EditText
+                android:id="@+id/editTextTextPersonName3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:text="Teléfono de contacto..."
+                tools:ignore="TouchTargetSizeCheck" />
+
+            <TextView
+                android:id="@+id/labelDateTV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#EAE7E7"
+                android:text="Fecha de la desaparición:" />
+
+            <EditText
+                android:id="@+id/editTextDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="date"
+                android:text="Fecha"
+                tools:ignore="TouchTargetSizeCheck" />
+
+            <TextView
+                android:id="@+id/labelZoneTV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#EAE7E7"
+                android:text="Zona en la que desapareció:" />
+
+            <EditText
+                android:id="@+id/editTextTextPersonName5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:text="Escriba la zona donde desapareció..."
+                tools:ignore="TouchTargetSizeCheck" />
+
+            <TextView
+                android:id="@+id/labelDescTV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#EAE7E7"
+                android:text="Describa otros datos que puedan ayudar a localizar o identificar a su mascota:" />
+
+            <EditText
+                android:id="@+id/editTextTextPersonName4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:maxLines="10"
+                android:text="Información de interés..."
+                tools:ignore="TouchTargetSizeCheck" />
+
+            <TextView
+                android:id="@+id/labelImageTV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#EAE7E7"
+                android:text="Puede proporcionar una imagen del perro aquí:" />
+        </LinearLayout>
+    </ScrollView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

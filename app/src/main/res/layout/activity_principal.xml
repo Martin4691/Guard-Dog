@@ -9,10 +9,6 @@
     <LinearLayout
         android:layout_width="409dp"
         android:layout_height="729dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="8dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -23,86 +19,86 @@
             android:id="@+id/messageTextView"
             android:layout_width="match_parent"
             android:layout_height="40dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="12dp"
+            android:layout_marginBottom="4dp"
             android:background="#E1DFDF"
             android:text="Recuerda: aquí puedes ver los anuncios de perros perdidos dentro de nuestra comunidad:" />
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="10dp" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="12dp"
+            android:layout_marginBottom="8dp"
             android:orientation="horizontal">
-
-            <Space
-                android:layout_width="15dp"
-                android:layout_height="wrap_content" />
 
             <ScrollView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
 
                 <TableLayout
-                    android:id="@+id/idTableLayout"
+                    android:id="@+id/idTableLayoutNotices"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"></TableLayout>
 
             </ScrollView>
 
-            <Space
-                android:layout_width="15dp"
-                android:layout_height="wrap_content" />
         </LinearLayout>
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="10dp" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:orientation="horizontal">
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/myAdvertisementButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@color/colorSplashBackground2"
+                    android:text="MIS ANUNCIOS"
+                    android:textColor="@color/white"
+                    tools:ignore="TextContrastCheck,TouchTargetSizeCheck" />
+
+                <Space
+                    android:layout_width="10dp"
+                    android:layout_height="wrap_content" />
+
+                <Button
+                    android:id="@+id/linksButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@android:color/holo_blue_dark"
+                    android:text="LINKS"
+                    android:textColor="@color/white"
+                    tools:ignore="TextContrastCheck,TouchTargetSizeCheck" />
+
+            </LinearLayout>
 
             <Button
-                android:id="@+id/myAdvertisementButton"
+                android:id="@+id/logoutButton"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@color/colorSplashBackground2"
-                android:text="MIS ANUNCIOS"
+                android:layout_height="40dp"
+                android:layout_marginTop="8dp"
+                android:layout_weight="0"
+                android:background="@color/logout"
+                android:text="CERRAR SESIÓN"
                 android:textColor="@color/white"
                 tools:ignore="TextContrastCheck,TouchTargetSizeCheck" />
-
-            <Space
-                android:layout_width="10dp"
-                android:layout_height="wrap_content" />
-
-            <Button
-                android:id="@+id/linksButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@android:color/holo_blue_dark"
-                android:text="LINKS"
-                android:textColor="@color/white"
-                tools:ignore="TextContrastCheck,TouchTargetSizeCheck" />
-
         </LinearLayout>
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="5dp" />
-
-        <Button
-            android:id="@+id/logoutButton"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_weight="0"
-            android:background="@color/logout"
-            android:text="CERRAR SESIÓN"
-            android:textColor="@color/white"
-            tools:ignore="TextContrastCheck,TouchTargetSizeCheck" />
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

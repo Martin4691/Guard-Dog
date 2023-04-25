@@ -54,6 +54,7 @@ class AuthenticationActivity : AppCompatActivity() {
         val email: String? = prefs?.getString("email", null)
         val provider: String? = prefs?.getString("provider", null)
 
+        // Si el usuario no cerró hizo logout, no tendrá que volver a hacer login.
         if(email != null && provider != null) {
             authLayout.visibility = View.INVISIBLE
             goToPrincipal(email, ProviderType.valueOf(provider))
@@ -61,7 +62,6 @@ class AuthenticationActivity : AppCompatActivity() {
     }
 
     private fun setup() {
-        title = "¡BIENVENIDO A GUARD DOG!"
         val loginButton = findViewById<Button>(R.id.loginButton)
         val signupButton = findViewById<Button>(R.id.signupButton)
         val googleButton = findViewById<Button>(R.id.googleButton)
@@ -107,7 +107,7 @@ class AuthenticationActivity : AppCompatActivity() {
     private fun showAlert() {
         val builder = AlertDialog.Builder(this)
         builder.setTitle("¡ERROR!")
-        builder.setMessage("Se ha producido un error en la autenticación del usuario.")
+        builder.setMessage("Se ha producido un error en la autenticación del usuario.\nRevise su Usuario, Contraseña y que esté accediendo por el mismo método por el que se registró.")
         builder.setPositiveButton("Aceptar", null)
         val dialog: AlertDialog = builder.create()
         dialog.show()

@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/notice_table_row"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="#FAF9F9">
 
     <LinearLayout
         android:id="@+id/idRowLayout"
@@ -13,7 +14,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:background="#EAE7E7"
             android:orientation="vertical">
 
@@ -31,7 +32,7 @@
                     <ImageView
                         android:id="@+id/rowImageView"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:background="#EAE7E7"
                         tools:srcCompat="@tools:sample/avatars" />
 
@@ -40,6 +41,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="#EAE7E7"
+                        android:maxLines="2"
                         android:text="NOMBRE CHUCHO"
                         android:textAlignment="center"
                         android:textSize="20sp" />
@@ -71,7 +73,7 @@
                         android:layout_height="wrap_content"
                         android:background="#EAE7E7"
                         android:text="CONTACTAR"
-                        android:textAlignment="center"
+                        android:textAlignment="textStart"
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
@@ -100,12 +102,6 @@
 
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/descriptionTextView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="#EAE7E7"
-                android:text="DESCRIPCION:" />
         </LinearLayout>
     </LinearLayout>
 </TableRow>

@@ -52,16 +52,6 @@ class PrincipalActivity : AppCompatActivity() {
         val userUID = userAuthenticated?.uid
         val user = hashMapOf("email" to email, "id" to userUID)
         val refLinks = db.collection("notices")
-        var noticeModel = NoticesModel(
-            nombreDueno = "",
-            nombrePerro = "",
-            email = "",
-            telefono = "",
-            diaDesaparicion = "",
-            zonaDesaparicion = "",
-            imagenPerro = "",
-            observaciones = ""
-        )
 
         db.collection("users").document(email.toString()).set(user)
         println("GD---> USER INFO:\nEl userUID es: " + userUID + "\nEl email es: " + email)
@@ -69,32 +59,33 @@ class PrincipalActivity : AppCompatActivity() {
         // Obtención de anuncios de Firestore
         refLinks.get().addOnSuccessListener { result ->
             for (document in result) {
-                noticeModel.nombrePerro = document.getString("nombrePerro").toString()
-                noticeModel.nombreDueno = document.getString("nombreDueno").toString()
-                noticeModel.email = document.getString("email").toString()
-                noticeModel.telefono = document.getString("telefono").toString()
-                noticeModel.observaciones = document.getString("observaciones").toString()
-                noticeModel.zonaDesaparicion = document.getString("zonaDesaparicion").toString()
-                noticeModel.diaDesaparicion = document.getString("diaDesaparicion").toString()
-                noticeModel.imagenPerro = document.getString("imagen").toString()
+                var noticeModel = NoticesModel(
+                    nombreDueno = document.getString("nombreDueno").toString(),
+                    nombrePerro = document.getString("nombrePerro").toString(),
+                    email = document.getString("email").toString(),
+                    telefono = document.getString("telefono").toString(),
+                    diaDesaparicion = document.getString("diaDesaparicion").toString(),
+                    zonaDesaparicion = document.getString("zonaDesaparicion").toString(),
+                    imagenPerro = document.getString("imagen").toString(),
+                    observaciones = document.getString("observaciones").toString()
+                )
+                noticesList.add(noticeModel)
 
                 println(
                     "GD---> DOCUMENT INFO:\n nombrePerro = ${noticeModel.nombrePerro} \n nombreDueño = ${noticeModel.nombreDueno} \n email = ${noticeModel.email} \n telefono = ${noticeModel.telefono} \n zonaDesaparicion = ${noticeModel.zonaDesaparicion} \n diaDesaparicion = ${noticeModel.diaDesaparicion} \n observaciones = ${noticeModel.observaciones} \n imagen = ${noticeModel.imagenPerro}"
                 )
             }
-        }
-            .addOnFailureListener { exception ->
+            addRowsToTable(noticesList)
+        }.addOnFailureListener { exception ->
                 println("GD---> ERROR REPORT:\n exception = $exception")
             }
-
 
     }
 
     private fun setup(email: String, provider: String) {
         val logoutButton = findViewById<Button>(R.id.logoutButton)
         val linksButton = findViewById<Button>(R.id.linksButton)
-
-        addRowsToTable(noticesList)
+        val myNoticeButton = findViewById<Button>(R.id.myAdvertisementButton)
 
         logoutButton.setOnClickListener {
             // Borrado de datos
@@ -102,13 +93,22 @@ class PrincipalActivity : AppCompatActivity() {
             prefs.clear()
             prefs.apply()
 
+            // Logout y vuelta al Login
             FirebaseAuth.getInstance().signOut()
-            onBackPressed()
+            val linksActivity = Intent(this, AuthenticationActivity::class.java)
+            startActivity(linksActivity)
         }
 
         linksButton.setOnClickListener {
             val linksActivity = Intent(this, LinksActivity::class.java)
             startActivity(linksActivity)
+        }
+
+        myNoticeButton.setOnClickListener {
+            val myNoticesActivity = Intent(this, MyNoticesActivity::class.java).apply {
+            putExtra("email", email)
+        }
+            startActivity(myNoticesActivity)
         }
 
     }
@@ -117,28 +117,34 @@ class PrincipalActivity : AppCompatActivity() {
         val tableRow = LayoutInflater.from(this).inflate(R.layout.notice_row_layout, null) as TableRow
 
         val dogImage = tableRow.findViewById<ImageView>(R.id.rowImageView)
-        //tableRow.findViewById<ImageView>(R.id.rowImageView).setImageBitmap(imagenPerro)
         tableRow.findViewById<TextView>(R.id.nombrePerroTextView).text = dog
         tableRow.findViewById<TextView>(R.id.diaTextView).text = day
         tableRow.findViewById<TextView>(R.id.zonaTextView).text = zone
         tableRow.findViewById<TextView>(R.id.nombreDueTextView).text = owner
         tableRow.findViewById<TextView>(R.id.emailTextView).text = email
         tableRow.findViewById<TextView>(R.id.telefonoTextView).text = telephone
-        tableRow.findViewById<TextView>(R.id.descriptionTextView).text = observaciones
 
-        if(imagenPerro != null) {
-            Picasso.get().load(imagenPerro).fit().into(dogImage)
-        } else {
-            println("GD---> ERROR REPORT: función inflateTableRow/if -> imagenPerro está llegando nulo")
+        try {
+            if(imagenPerro != null) {
+                Picasso.get().load(imagenPerro).fit().into(dogImage)
+            } else {
+                println("GD---> ERROR REPORT: función inflateTableRow/if -> imagenPerro está llegando nulo")
+            }
+        } catch (e: Exception) {
+            println("GD---> ERROR REPORT: $e")
         }
 
         return tableRow
     }
 
-    private fun addRowsToTable(dataList: List<NoticesModel>) {
-        val tableLayout = findViewById<TableLayout>(R.id.idTableLayout)
-        for (data in dataList) {
-            val tableRow = inflateTableRow(dog = data.nombrePerro, owner = data.nombreDueno, day = data.diaDesaparicion, zone = data.zonaDesaparicion, email = data.email, telephone = data.telefono, imagenPerro = data.imagenPerro, observaciones = data.observaciones)
+    private fun addRowsToTable(noticesList: List<NoticesModel>) {
+        val tableLayout = findViewById<TableLayout>(R.id.idTableLayoutNotices)
+        for (notice in noticesList) {
+            val tableRow = inflateTableRow(dog = notice.nombrePerro, owner = notice.nombreDueno, day = notice.diaDesaparicion, zone = notice.zonaDesaparicion, email = notice.email, telephone = notice.telefono, imagenPerro = notice.imagenPerro, observaciones = notice.observaciones)
+            tableRow.setOnClickListener {
+                val noticeActivity = Intent(this, NoticeActivity::class.java)
+                startActivity(noticeActivity)
+            }
             tableLayout.addView(tableRow)
         }
     }

@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@mipmap/logobackgroun"
     tools:context=".PrincipalActivity">
 
     <LinearLayout
@@ -24,29 +25,25 @@
             android:layout_marginEnd="12dp"
             android:layout_marginBottom="4dp"
             android:background="#E1DFDF"
-            android:text="Recuerda: aquí puedes ver los anuncios de perros perdidos dentro de nuestra comunidad:" />
+            android:text="Recuerda: aquí puedes ver los anuncios de perros perdidos dentro de nuestra comunidad:"
+            android:textStyle="bold" />
 
-        <LinearLayout
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="12dp"
-            android:layout_marginBottom="8dp"
-            android:orientation="horizontal">
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:layout_weight="1"
+            tools:ignore="SpeakableTextPresentCheck">
 
-            <ScrollView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+            <TableLayout
+                android:id="@+id/idTableLayoutNotices"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"></TableLayout>
 
-                <TableLayout
-                    android:id="@+id/idTableLayoutNotices"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"></TableLayout>
-
-            </ScrollView>
-
-        </LinearLayout>
+        </ScrollView>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -69,7 +66,9 @@
                     android:layout_weight="1"
                     android:background="@color/colorSplashBackground2"
                     android:text="MIS ANUNCIOS"
+                    android:textAlignment="center"
                     android:textColor="@color/white"
+                    android:textStyle="bold"
                     tools:ignore="TextContrastCheck,TouchTargetSizeCheck" />
 
                 <Space
@@ -83,7 +82,9 @@
                     android:layout_weight="1"
                     android:background="@android:color/holo_blue_dark"
                     android:text="LINKS"
+                    android:textAlignment="center"
                     android:textColor="@color/white"
+                    android:textStyle="bold"
                     tools:ignore="TextContrastCheck,TouchTargetSizeCheck" />
 
             </LinearLayout>
@@ -93,10 +94,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_marginTop="8dp"
+                android:layout_marginBottom="16dp"
                 android:layout_weight="0"
                 android:background="@color/logout"
                 android:text="CERRAR SESIÓN"
+                android:textAlignment="center"
                 android:textColor="@color/white"
+                android:textStyle="bold"
                 tools:ignore="TextContrastCheck,TouchTargetSizeCheck" />
         </LinearLayout>
 

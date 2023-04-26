@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@mipmap/logobackgroun"
     tools:context=".AuthenticationActivity">
 
     <LinearLayout
@@ -50,7 +51,8 @@
             android:id="@+id/warningTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="*Recuerda usar letras y numeros en tu contraseña." />
+            android:text="*Recuerda usar letras y numeros en tu contraseña."
+            android:textStyle="bold" />
 
         <Space
             android:layout_width="match_parent"
@@ -69,6 +71,7 @@
                 android:background="@color/colorSplashBackground2"
                 android:text="REGISTRAR"
                 android:textColor="@color/white"
+                android:textStyle="bold"
                 tools:ignore="TextContrastCheck" />
 
             <Space
@@ -82,7 +85,8 @@
                 android:layout_weight="1"
                 android:background="@color/purple_500"
                 android:text="ACCEDER"
-                android:textColor="@color/white" />
+                android:textColor="@color/white"
+                android:textStyle="bold" />
 
         </LinearLayout>
 
@@ -95,7 +99,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="O también puedes iniciar sesión con tu cuenta de Google aquí:"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            android:textStyle="bold" />
 
         <Space
             android:layout_width="match_parent"
@@ -105,7 +110,29 @@
             android:id="@+id/googleButton"
             android:layout_width="match_parent"
             android:layout_height="60dp"
+            android:textAlignment="center"
+            android:textStyle="bold"
             app:icon="@mipmap/google_completo"
             tools:ignore="SpeakableTextPresentCheck" />
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="75dp"
+            app:srcCompat="@mipmap/logocabezapng" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:fontFamily="sans-serif-thin"
+            android:text="Guard Dog"
+            android:textAlignment="center"
+            android:textAllCaps="false"
+            android:textColor="@color/colorSplashBackground"
+            android:textSize="48sp"
+            android:textStyle="bold" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

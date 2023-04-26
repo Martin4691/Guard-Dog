@@ -26,10 +26,12 @@ class AuthenticationActivity : AppCompatActivity() {
     private val GOOGLE_SIGN_IN = 100
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        // Pantalla de carga o Splash Screen
         setTheme(R.style.Theme_GuardDog)
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_authentication)
+        supportActionBar?.hide()
 
         // Analytics Event:
         val analytics:FirebaseAnalytics = FirebaseAnalytics.getInstance(this)

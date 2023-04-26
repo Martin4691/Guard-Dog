@@ -15,6 +15,7 @@ class MyNoticesActivity : AppCompatActivity() {
     //Firestore
     val db = FirebaseFirestore.getInstance()
     val refNotices = db.collection("notices")
+    var email = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,7 +24,7 @@ class MyNoticesActivity : AppCompatActivity() {
 
         // Obtención de datos de usuario para comparar:
         val bundle: Bundle? = intent.extras
-        val email: String? = bundle?.getString("email")
+        email = bundle?.getString("email").toString()
         val userAuthenticated = Firebase.auth.currentUser
         val userUID = userAuthenticated?.uid
         val user = hashMapOf("email" to email, "id" to userUID)
@@ -48,8 +49,10 @@ class MyNoticesActivity : AppCompatActivity() {
 
                 if (email == notice.email) {
                     println(
-                        "GD---> DOCUMENT INFO:\n nombrePerro = ${notice.nombrePerro} \n nombreDueño = ${notice.nombreDueno} \n email = ${notice.email} \n telefono = ${notice.telefono} \n zonaDesaparicion = ${notice.zonaDesaparicion} \n diaDesaparicion = ${notice.diaDesaparicion} \n observaciones = ${notice.observaciones} \n imagen = ${notice.imagenPerro}"
+                        "GD---> DOCUMENT INFO: notice => $notice"
                     )
+
+                    selectedNoticeModel = notice
                     myNoticesList.add(notice)
                 }
             }
@@ -63,6 +66,12 @@ class MyNoticesActivity : AppCompatActivity() {
         setup()
     }
 
+    override fun onResume() {
+        super.onResume()
+        addRowsToTable(myNoticesList)
+    }
+
+
     private fun setup() {
         val backButton = findViewById<Button>(R.id.backIconButton)
         val newNoticeButton = findViewById<Button>(R.id.newNoticeButton)
@@ -73,23 +82,44 @@ class MyNoticesActivity : AppCompatActivity() {
         }
 
         newNoticeButton.setOnClickListener {
-            val noticeActivity = Intent(this, FormActivity::class.java)
+            val noticeActivity = Intent(this, FormActivity::class.java).apply {
+            putExtra("email", email)
+            }
             startActivity(noticeActivity)
         }
     }
 
-    private fun inflateTableRow(dog: String): TableRow {
+    private fun inflateTableRow(selectedNotice: NoticesModel): TableRow {
         val tableRow = LayoutInflater.from(this).inflate(R.layout.my_notice_row_layout, null) as TableRow
+        var rowSelectedName = tableRow.findViewById<TextView>(R.id.myDogNameTextView)
+        rowSelectedName.text = selectedNotice.nombrePerro
 
-        tableRow.findViewById<TextView>(R.id.myDogNameTextView).text = dog
+        tableRow.findViewById<Button>(R.id.deleteButton).setOnClickListener {
+            val documentId = userModel.email + "-" + selectedNotice.nombrePerro
+            val docRef = db.collection("notices").document(documentId)
+
+            println("msm: documentId = $documentId")
+
+            docRef.delete()
+                .addOnSuccessListener {
+                    println("GD---> DOCUMENT INFO: Se borró el documento $documentId correctamente")
+                }
+                .addOnFailureListener { e ->
+                    // Ocurrió un error al eliminar el documento
+                    println("GD---> Error deleting document, $e")
+                }
+
+        }
 
         return tableRow
     }
 
     private fun addRowsToTable(noticesList: List<NoticesModel>) {
         val tableLayout = findViewById<TableLayout>(R.id.idTableLayoutMyNotices)
+        tableLayout.removeAllViews()
+
         for (notice in noticesList) {
-            val tableRow = inflateTableRow(dog = notice.nombrePerro)
+            val tableRow = inflateTableRow(notice)
             tableRow.setOnClickListener {
                 val noticeActivity = Intent(this, NoticeActivity::class.java)
                 startActivity(noticeActivity)

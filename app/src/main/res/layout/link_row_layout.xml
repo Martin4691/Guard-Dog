@@ -15,7 +15,8 @@
             android:background="@drawable/rounded_corners"
             android:text="Nombre:"
             android:textAlignment="center"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/nameRow"
@@ -31,7 +32,8 @@
             android:layout_height="wrap_content"
             android:background="#EAE7E7"
             android:text="Web:"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/webRow"
@@ -48,15 +50,16 @@
             android:layout_height="wrap_content"
             android:background="#EAE7E7"
             android:text="Descripción:"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/descripcionRow"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:autoSizeTextType="uniform"
             android:ellipsize="end"
             android:maxLines="5"
-            android:autoSizeTextType="uniform"
             android:textSize="16sp" />
 
         <Space

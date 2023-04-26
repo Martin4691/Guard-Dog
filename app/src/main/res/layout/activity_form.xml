@@ -4,139 +4,169 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@mipmap/logobackgroun"
     tools:context=".FormActivity">
 
-    <ScrollView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <LinearLayout
+        <ScrollView
+            android:id="@+id/scrollView2"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="16dp"
-            android:orientation="vertical">
+            android:layout_height="match_parent"
+            android:layout_weight="1">
 
-            <TextView
-                android:id="@+id/labelDogTV"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#EAE7E7"
-                android:text="Nombre del perro:"
-                android:textAlignment="textStart" />
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="16dp"
+                android:orientation="vertical">
 
-            <EditText
-                android:id="@+id/editTextTextPersonName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="textPersonName"
-                android:text="Escriba el nombre del perro..."
-                tools:ignore="TouchTargetSizeCheck" />
+                <TextView
+                    android:id="@+id/labelDogTV"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#EAE7E7"
+                    android:text="Nombre del perro:"
+                    android:textAlignment="textStart"
+                    android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/labelOwnerTV"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="#EAE7E7"
-                android:text="Nombre del dueño:" />
+                <EditText
+                    android:id="@+id/editTextDogName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="Escriba el nombre del perro..."
+                    android:inputType="textPersonName"
+                    tools:ignore="TouchTargetSizeCheck" />
 
-            <EditText
-                android:id="@+id/editTextTextPersonName2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="textPersonName"
-                android:text="Escriba su nombre..."
-                tools:ignore="TouchTargetSizeCheck" />
+                <TextView
+                    android:id="@+id/labelOwnerTV"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#EAE7E7"
+                    android:text="Nombre del dueño:"
+                    android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/labelEmailTV"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="#EAE7E7"
-                android:text="Email de contacto:" />
+                <EditText
+                    android:id="@+id/editTextOwnerName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="Escriba su nombre..."
+                    android:inputType="textPersonName"
+                    tools:ignore="TouchTargetSizeCheck" />
 
-            <TextView
-                android:id="@+id/labelEmailLogInTV"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="AQUI SE PONDRÁ EL EMAIL CON EL QUE SE INICIÓ SESION" />
+                <TextView
+                    android:id="@+id/labelEmailTV"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#EAE7E7"
+                    android:text="Email de contacto:"
+                    android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/labelTelTV"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="#EAE7E7"
-                android:text="Teléfono de contacto:" />
+                <TextView
+                    android:id="@+id/labelEmailLogInTV"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="No se pudo cargar el mail, pruebe a reiniciar la app."
+                    android:textSize="16sp" />
 
-            <EditText
-                android:id="@+id/editTextTextPersonName3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="textPersonName"
-                android:text="Teléfono de contacto..."
-                tools:ignore="TouchTargetSizeCheck" />
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="8dp" />
 
-            <TextView
-                android:id="@+id/labelDateTV"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="#EAE7E7"
-                android:text="Fecha de la desaparición:" />
+                <TextView
+                    android:id="@+id/labelTelTV"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#EAE7E7"
+                    android:text="Teléfono de contacto:"
+                    android:textStyle="bold" />
 
-            <EditText
-                android:id="@+id/editTextDate"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="date"
-                android:text="Fecha"
-                tools:ignore="TouchTargetSizeCheck" />
+                <EditText
+                    android:id="@+id/editTextTelephone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="Teléfono de contacto..."
+                    android:inputType="textPersonName"
+                    tools:ignore="TouchTargetSizeCheck" />
 
-            <TextView
-                android:id="@+id/labelZoneTV"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="#EAE7E7"
-                android:text="Zona en la que desapareció:" />
+                <TextView
+                    android:id="@+id/labelDateTV"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#EAE7E7"
+                    android:text="Fecha de la desaparición:"
+                    android:textStyle="bold" />
 
-            <EditText
-                android:id="@+id/editTextTextPersonName5"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="textPersonName"
-                android:text="Escriba la zona donde desapareció..."
-                tools:ignore="TouchTargetSizeCheck" />
+                <EditText
+                    android:id="@+id/editTextDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="Fecha"
+                    android:inputType="date"
+                    tools:ignore="TouchTargetSizeCheck" />
 
-            <TextView
-                android:id="@+id/labelDescTV"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="#EAE7E7"
-                android:text="Describa otros datos que puedan ayudar a localizar o identificar a su mascota:" />
+                <TextView
+                    android:id="@+id/labelZoneTV"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#EAE7E7"
+                    android:text="Zona en la que desapareció:"
+                    android:textStyle="bold" />
 
-            <EditText
-                android:id="@+id/editTextTextPersonName4"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="textPersonName"
-                android:maxLines="10"
-                android:text="Información de interés..."
-                tools:ignore="TouchTargetSizeCheck" />
+                <EditText
+                    android:id="@+id/editTextZone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="Escriba la zona donde desapareció..."
+                    android:inputType="textPersonName"
+                    tools:ignore="TouchTargetSizeCheck" />
 
-            <TextView
-                android:id="@+id/labelImageTV"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="#EAE7E7"
-                android:text="Puede proporcionar una imagen del perro aquí:" />
-        </LinearLayout>
-    </ScrollView>
+                <TextView
+                    android:id="@+id/labelDescTV"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#EAE7E7"
+                    android:text="Describa otros datos que puedan ayudar a localizar o identificar a su mascota:"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/editTextDescription"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="Información de interés..."
+                    android:inputType="textPersonName"
+                    android:maxLines="10"
+                    tools:ignore="TouchTargetSizeCheck" />
+
+                <TextView
+                    android:id="@+id/labelImageTV"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#EAE7E7"
+                    android:text="Puede proporcionar una imagen del perro aquí:"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </ScrollView>
+
+        <Button
+            android:id="@+id/createNoticeButton"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="PUBLICAR ANUNCIO"
+            android:textAlignment="center"
+            android:textStyle="bold" />
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

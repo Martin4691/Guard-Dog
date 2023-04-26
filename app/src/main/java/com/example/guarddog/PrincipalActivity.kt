@@ -24,6 +24,8 @@ enum class ProviderType() {
 class PrincipalActivity : AppCompatActivity() {
     @SuppressLint("StringFormatInvalid")
     val noticesList = ArrayList<NoticesModel>()
+    var noticeEmail = ""
+    var noticeDogName = ""
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,13 +53,14 @@ class PrincipalActivity : AppCompatActivity() {
         val userAuthenticated = Firebase.auth.currentUser
         val userUID = userAuthenticated?.uid
         val user = hashMapOf("email" to email, "id" to userUID)
-        val refLinks = db.collection("notices")
+        val refNotices = db.collection("notices")
 
         db.collection("users").document(email.toString()).set(user)
         println("GD---> USER INFO:\nEl userUID es: " + userUID + "\nEl email es: " + email)
+        userModel = UserModel(email = email.toString(), uid = userUID.toString())
 
         // Obtención de anuncios de Firestore
-        refLinks.get().addOnSuccessListener { result ->
+        refNotices.get().addOnSuccessListener { result ->
             for (document in result) {
                 var noticeModel = NoticesModel(
                     nombreDueno = document.getString("nombreDueno").toString(),
@@ -69,11 +72,9 @@ class PrincipalActivity : AppCompatActivity() {
                     imagenPerro = document.getString("imagen").toString(),
                     observaciones = document.getString("observaciones").toString()
                 )
+
                 noticesList.add(noticeModel)
 
-                println(
-                    "GD---> DOCUMENT INFO:\n nombrePerro = ${noticeModel.nombrePerro} \n nombreDueño = ${noticeModel.nombreDueno} \n email = ${noticeModel.email} \n telefono = ${noticeModel.telefono} \n zonaDesaparicion = ${noticeModel.zonaDesaparicion} \n diaDesaparicion = ${noticeModel.diaDesaparicion} \n observaciones = ${noticeModel.observaciones} \n imagen = ${noticeModel.imagenPerro}"
-                )
             }
             addRowsToTable(noticesList)
         }.addOnFailureListener { exception ->
@@ -81,6 +82,12 @@ class PrincipalActivity : AppCompatActivity() {
             }
 
     }
+
+    override fun onResume() {
+        super.onResume()
+        addRowsToTable(noticesList)
+    }
+
 
     private fun setup(email: String, provider: String) {
         val logoutButton = findViewById<Button>(R.id.logoutButton)
@@ -106,7 +113,7 @@ class PrincipalActivity : AppCompatActivity() {
 
         myNoticeButton.setOnClickListener {
             val myNoticesActivity = Intent(this, MyNoticesActivity::class.java).apply {
-            putExtra("email", email)
+                putExtra("email", email)
         }
             startActivity(myNoticesActivity)
         }
@@ -117,6 +124,7 @@ class PrincipalActivity : AppCompatActivity() {
         val tableRow = LayoutInflater.from(this).inflate(R.layout.notice_row_layout, null) as TableRow
 
         val dogImage = tableRow.findViewById<ImageView>(R.id.rowImageView)
+
         tableRow.findViewById<TextView>(R.id.nombrePerroTextView).text = dog
         tableRow.findViewById<TextView>(R.id.diaTextView).text = day
         tableRow.findViewById<TextView>(R.id.zonaTextView).text = zone
@@ -139,11 +147,18 @@ class PrincipalActivity : AppCompatActivity() {
 
     private fun addRowsToTable(noticesList: List<NoticesModel>) {
         val tableLayout = findViewById<TableLayout>(R.id.idTableLayoutNotices)
+        tableLayout.removeAllViews()
+
         for (notice in noticesList) {
             val tableRow = inflateTableRow(dog = notice.nombrePerro, owner = notice.nombreDueno, day = notice.diaDesaparicion, zone = notice.zonaDesaparicion, email = notice.email, telephone = notice.telefono, imagenPerro = notice.imagenPerro, observaciones = notice.observaciones)
             tableRow.setOnClickListener {
-                val noticeActivity = Intent(this, NoticeActivity::class.java)
-                startActivity(noticeActivity)
+                val noticeActivity = Intent(this, NoticeActivity::class.java).apply {
+                    noticeEmail = notice.email
+                    noticeDogName = notice.nombrePerro
+                    putExtra("noticeEmail", noticeEmail)
+                    putExtra("noticeDogName", noticeDogName)
+                }
+            startActivity(noticeActivity)
             }
             tableLayout.addView(tableRow)
         }

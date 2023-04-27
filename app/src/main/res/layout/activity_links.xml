@@ -53,8 +53,13 @@
                 android:id="@+id/backButton"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
+                android:layout_marginBottom="15dp"
+                android:background="@drawable/back"
                 android:text="VOLVER"
-                android:textStyle="bold" />
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                tools:ignore="TextContrastCheck" />
         </LinearLayout>
     </ScrollView>
 

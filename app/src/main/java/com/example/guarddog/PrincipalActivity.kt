@@ -24,9 +24,6 @@ enum class ProviderType() {
 class PrincipalActivity : AppCompatActivity() {
     @SuppressLint("StringFormatInvalid")
     val noticesList = ArrayList<NoticesModel>()
-    var noticeEmail = ""
-    var noticeDogName = ""
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,31 +32,35 @@ class PrincipalActivity : AppCompatActivity() {
         FirebaseFirestore.setLoggingEnabled(true)
         FirebaseApp.initializeApp(this)
 
-        // Setup
+        // Setup:
         val bundle: Bundle? = intent.extras
         val email: String? = bundle?.getString("email")
         val provider: String? = bundle?.getString("provider")
-        setup(email ?: "No email", provider ?: "No provider")
+        setup(email ?: "No email")
 
-        // Guardado de datos del usuario
+        // Guardado de datos del usuario:
+        // (email y que opción eligió para el inici de sesión)
         val prefs: SharedPreferences.Editor =
             getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE).edit()
         prefs.putString("email", email)
         prefs.putString("provider", provider)
         prefs.apply()
 
-        // Creación/ actualización del usuario en Firestore Data Base
-        val db = FirebaseFirestore.getInstance()
+        // Creación/ actualización del usuario en Firebase:
         val userAuthenticated = Firebase.auth.currentUser
         val userUID = userAuthenticated?.uid
+        userModel.email = email.toString()
         val user = hashMapOf("email" to email, "id" to userUID)
+
+        // Variables Firebase:
+        val db = FirebaseFirestore.getInstance()
+
         val refNotices = db.collection("notices")
 
-        db.collection("users").document(email.toString()).set(user)
-        println("GD---> USER INFO:\nEl userUID es: " + userUID + "\nEl email es: " + email)
-        userModel = UserModel(email = email.toString(), uid = userUID.toString())
+        println("GD Control---> USER: El userUID es: " + userUID + ", El email es: " + email)
 
-        // Obtención de anuncios de Firestore
+
+        // Obtención de anuncios de Firestore:
         refNotices.get().addOnSuccessListener { result ->
             for (document in result) {
                 var noticeModel = NoticesModel(
@@ -74,13 +75,12 @@ class PrincipalActivity : AppCompatActivity() {
                 )
 
                 noticesList.add(noticeModel)
-
             }
             addRowsToTable(noticesList)
         }.addOnFailureListener { exception ->
-                println("GD---> ERROR REPORT:\n exception = $exception")
-            }
-
+            Toast.makeText(this, "¡Ups... estamos teniendo problemas para cargar los anuncios!", Toast.LENGTH_SHORT).show()
+            println("GD Control---> ERROR:\n exception = $exception")
+        }
     }
 
     override fun onResume() {
@@ -89,75 +89,89 @@ class PrincipalActivity : AppCompatActivity() {
     }
 
 
-    private fun setup(email: String, provider: String) {
+    private fun setup(email: String) {
         val logoutButton = findViewById<Button>(R.id.logoutButton)
         val linksButton = findViewById<Button>(R.id.linksButton)
         val myNoticeButton = findViewById<Button>(R.id.myAdvertisementButton)
 
+        // Botones de navegación:
         logoutButton.setOnClickListener {
-            // Borrado de datos
+            // Borrado de datos:
             val prefs: SharedPreferences.Editor = getSharedPreferences(getString(R.string.prefs_file),Context.MODE_PRIVATE).edit()
             prefs.clear()
             prefs.apply()
 
-            // Logout y vuelta al Login
+            // Logout y vuelta a la pantalla inicial:
             FirebaseAuth.getInstance().signOut()
             val linksActivity = Intent(this, AuthenticationActivity::class.java)
             startActivity(linksActivity)
         }
 
         linksButton.setOnClickListener {
+            // Navegación a la pantalla Links:
             val linksActivity = Intent(this, LinksActivity::class.java)
             startActivity(linksActivity)
         }
 
         myNoticeButton.setOnClickListener {
+            // Navegación a la pantalla mis anuncios:
             val myNoticesActivity = Intent(this, MyNoticesActivity::class.java).apply {
-                putExtra("email", email)
+            // Reseteo del selectedNoticeModel para evitar conflictos
+            selectedNoticeModel = NoticesModel(
+                nombrePerro = "",
+                nombreDueno = "",
+                zonaDesaparicion = "",
+                diaDesaparicion = "",
+                email = "",
+                telefono = "",
+                imagenPerro = "",
+                observaciones = ""
+            )
         }
             startActivity(myNoticesActivity)
         }
 
     }
 
-    private fun inflateTableRow(dog: String, owner: String, day: String, zone: String, email: String, telephone: String, imagenPerro: String, observaciones: String): TableRow {
+    // Configuración del TableRow
+    private fun inflateTableRow(notice: NoticesModel): TableRow {
         val tableRow = LayoutInflater.from(this).inflate(R.layout.notice_row_layout, null) as TableRow
 
         val dogImage = tableRow.findViewById<ImageView>(R.id.rowImageView)
 
-        tableRow.findViewById<TextView>(R.id.nombrePerroTextView).text = dog
-        tableRow.findViewById<TextView>(R.id.diaTextView).text = day
-        tableRow.findViewById<TextView>(R.id.zonaTextView).text = zone
-        tableRow.findViewById<TextView>(R.id.nombreDueTextView).text = owner
-        tableRow.findViewById<TextView>(R.id.emailTextView).text = email
-        tableRow.findViewById<TextView>(R.id.telefonoTextView).text = telephone
+        tableRow.findViewById<TextView>(R.id.nombrePerroTextView).text = notice.nombrePerro
+        tableRow.findViewById<TextView>(R.id.diaTextView).text = notice.diaDesaparicion
+        tableRow.findViewById<TextView>(R.id.zonaTextView).text = notice.zonaDesaparicion
+        tableRow.findViewById<TextView>(R.id.nombreDueTextView).text = notice.nombreDueno
+        tableRow.findViewById<TextView>(R.id.emailTextView).text = notice.email
+        tableRow.findViewById<TextView>(R.id.telefonoTextView).text = notice.telefono
 
+        // Configuración de la imagen:
         try {
-            if(imagenPerro != null) {
-                Picasso.get().load(imagenPerro).fit().into(dogImage)
+            if(notice.imagenPerro != null) {
+                Picasso.get().load(notice.imagenPerro).fit().into(dogImage)
             } else {
-                println("GD---> ERROR REPORT: función inflateTableRow/if -> imagenPerro está llegando nulo")
+                println("GD Control---> ERROR: función inflateTableRow/if -> imagenPerro está llegando nulo")
+                Toast.makeText(this, "¡Ups... ha habido algún problema con la imagen!", Toast.LENGTH_SHORT).show()
             }
         } catch (e: Exception) {
-            println("GD---> ERROR REPORT: $e")
+            println("GD---> ERROR: Exception catch imagenPerro=> $e")
+            Toast.makeText(this, "¡Ups... ha habido algún problema con la imagen!", Toast.LENGTH_SHORT).show()
         }
 
         return tableRow
     }
 
+    // Configuración de la TableLayout:
     private fun addRowsToTable(noticesList: List<NoticesModel>) {
         val tableLayout = findViewById<TableLayout>(R.id.idTableLayoutNotices)
         tableLayout.removeAllViews()
 
         for (notice in noticesList) {
-            val tableRow = inflateTableRow(dog = notice.nombrePerro, owner = notice.nombreDueno, day = notice.diaDesaparicion, zone = notice.zonaDesaparicion, email = notice.email, telephone = notice.telefono, imagenPerro = notice.imagenPerro, observaciones = notice.observaciones)
+            val tableRow = inflateTableRow(notice)
             tableRow.setOnClickListener {
-                val noticeActivity = Intent(this, NoticeActivity::class.java).apply {
-                    noticeEmail = notice.email
-                    noticeDogName = notice.nombrePerro
-                    putExtra("noticeEmail", noticeEmail)
-                    putExtra("noticeDogName", noticeDogName)
-                }
+                selectedNoticeModel = notice
+                val noticeActivity = Intent(this, NoticeActivity::class.java)
             startActivity(noticeActivity)
             }
             tableLayout.addView(tableRow)

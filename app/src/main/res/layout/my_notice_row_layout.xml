@@ -24,7 +24,7 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/textView2"
+                android:id="@+id/myNoticeLabelTV"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
                 android:layout_weight="1"
@@ -51,14 +51,17 @@
             android:layout_width="match_parent"
             android:layout_height="30dp"
             android:layout_weight="1"
-            android:background="#9C2424"
+            android:background="@drawable/destructive"
             android:text="ELIMINAR"
             android:textAlignment="center"
-            android:textAllCaps="false"
-            android:textSize="14sp"
+            android:textAllCaps="true"
+            android:textColor="@color/white"
+            android:textSize="16sp"
             android:textStyle="bold"
             app:icon="@android:drawable/ic_menu_delete"
-            tools:ignore="TouchTargetSizeCheck" />
+            app:iconSize="20dp"
+            app:iconTint="@color/white"
+            tools:ignore="TouchTargetSizeCheck,TextContrastCheck" />
 
         <Space
             android:layout_width="match_parent"

@@ -12,29 +12,19 @@ import com.google.firebase.ktx.Firebase
 class MyNoticesActivity : AppCompatActivity() {
     val myNoticesList = ArrayList<NoticesModel>()
 
-    //Firestore
+    //Firestore:
     val db = FirebaseFirestore.getInstance()
     val refNotices = db.collection("notices")
-    var email = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_my_notices)
         supportActionBar?.hide()
 
-        // Obtención de datos de usuario para comparar:
-        val bundle: Bundle? = intent.extras
-        email = bundle?.getString("email").toString()
-        val userAuthenticated = Firebase.auth.currentUser
-        val userUID = userAuthenticated?.uid
-        val user = hashMapOf("email" to email, "id" to userUID)
-
-
-        println("GD---> USER INFO:\nEl userUID es: " + userUID + "\nEl email es: " + email)
-
-        // Obtención de anuncios de Firestore
-
+        // Obtención de anuncios (que sean del user logeado) de Firestore:
         refNotices.get().addOnSuccessListener { result ->
+            println("GD Control---> Mis Anuncios: userModel.email = ${userModel.email}")
+
             for (document in result) {
                 var notice = NoticesModel(
                     nombreDueno = document.getString("nombreDueno").toString(),
@@ -47,18 +37,15 @@ class MyNoticesActivity : AppCompatActivity() {
                     observaciones = document.getString("observaciones").toString()
                 )
 
-                if (email == notice.email) {
-                    println(
-                        "GD---> DOCUMENT INFO: notice => $notice"
-                    )
-
-                    selectedNoticeModel = notice
+                if (userModel.email == notice.email) {
+                    println("GD---> DOCUMENT INFO: notice => $notice")
                     myNoticesList.add(notice)
                 }
             }
 
             addRowsToTable(myNoticesList)
         }.addOnFailureListener { exception ->
+            Toast.makeText(this, "¡Ups... ha habido algún problema al cargar tus anuncios!", Toast.LENGTH_SHORT).show()
             println("GD---> ERROR REPORT:\n exception = $exception")
         }
 
@@ -77,43 +64,74 @@ class MyNoticesActivity : AppCompatActivity() {
         val newNoticeButton = findViewById<Button>(R.id.newNoticeButton)
 
         backButton.setOnClickListener {
+            //Reseteo selectedNoticeModel:
+            selectedNoticeModel = NoticesModel(
+                nombrePerro = "",
+                nombreDueno = "",
+                zonaDesaparicion = "",
+                diaDesaparicion = "",
+                email = "",
+                telefono = "",
+                imagenPerro = "",
+                observaciones = ""
+            )
+
             val principalActivity = Intent(this, PrincipalActivity::class.java)
             startActivity(principalActivity)
         }
 
         newNoticeButton.setOnClickListener {
-            val noticeActivity = Intent(this, FormActivity::class.java).apply {
-            putExtra("email", email)
-            }
+            val noticeActivity = Intent(this, FormActivity::class.java)
             startActivity(noticeActivity)
         }
     }
 
+    // Configuración TableRows:
     private fun inflateTableRow(selectedNotice: NoticesModel): TableRow {
         val tableRow = LayoutInflater.from(this).inflate(R.layout.my_notice_row_layout, null) as TableRow
         var rowSelectedName = tableRow.findViewById<TextView>(R.id.myDogNameTextView)
         rowSelectedName.text = selectedNotice.nombrePerro
 
+        // Se le asignara la funcion de borrar al botón "Delete":
         tableRow.findViewById<Button>(R.id.deleteButton).setOnClickListener {
             val documentId = userModel.email + "-" + selectedNotice.nombrePerro
             val docRef = db.collection("notices").document(documentId)
 
-            println("msm: documentId = $documentId")
-
             docRef.delete()
                 .addOnSuccessListener {
-                    println("GD---> DOCUMENT INFO: Se borró el documento $documentId correctamente")
+                    println("GD Control ---> DELETE: documentId = $documentId")
+                    Toast.makeText(this, "¡Anuncio eliminado correctamente!", Toast.LENGTH_SHORT)
+                        .show()
+                    val principalActivity = Intent(this, PrincipalActivity::class.java)
+                    startActivity(principalActivity)
                 }
                 .addOnFailureListener { e ->
-                    // Ocurrió un error al eliminar el documento
                     println("GD---> Error deleting document, $e")
+                    Toast.makeText(
+                        this,
+                        "¡Ups!... Hubo un problema al eliminar su anuncio.",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
-
         }
+
+        // Pero si clica en "Nombre:" o el nombre del perro abrira el anuncio a pantalla completa:
+        rowSelectedName.setOnClickListener {
+                selectedNoticeModel.nombrePerro = selectedNotice.nombrePerro
+                val noticeActivity = Intent(this, NoticeActivity::class.java)
+                startActivity(noticeActivity)
+            }
+
+        tableRow.findViewById<TextView>(R.id.myNoticeLabelTV).setOnClickListener {
+                selectedNoticeModel.nombrePerro = selectedNotice.nombrePerro
+                val noticeActivity = Intent(this, NoticeActivity::class.java)
+                startActivity(noticeActivity)
+            }
 
         return tableRow
     }
 
+    // Configuración TableLayout:
     private fun addRowsToTable(noticesList: List<NoticesModel>) {
         val tableLayout = findViewById<TableLayout>(R.id.idTableLayoutMyNotices)
         tableLayout.removeAllViews()

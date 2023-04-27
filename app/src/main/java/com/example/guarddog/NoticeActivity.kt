@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import com.google.firebase.firestore.FirebaseFirestore
 import com.squareup.picasso.Picasso
 
@@ -18,18 +19,12 @@ class NoticeActivity : AppCompatActivity() {
         setContentView(R.layout.activity_notice)
         supportActionBar?.hide()
 
-
-        // Setup
-        val bundle: Bundle? = intent.extras
-        val noticeEmail: String? = bundle?.getString("noticeEmail")
-        val noticeDogName: String? = bundle?.getString("noticeDogName")
-        setup(noticeEmail ?: "No email", noticeDogName ?: "No dogName")
-
+        setup(userModel.email ?: "No email", selectedNoticeModel.nombrePerro ?: "No dogName")
     }
 
 
     private fun setup(noticeEmail: String, noticeDogName: String) {
-        println("msm: noticeEmail = $noticeEmail, noticeDogName = $noticeDogName")
+        println("GD Control---> Notice setup params => Email = $noticeEmail, noticeDogName = $noticeDogName")
         var dogImage = findViewById<ImageView>(R.id.dogNoticeImageView)
         val db = FirebaseFirestore.getInstance()
 
@@ -48,6 +43,7 @@ class NoticeActivity : AppCompatActivity() {
                     findViewById<TextView>(R.id.noticeDescriptionTextView).text = document.getString("observaciones").toString()
                     imagenPerro = document.getString("imagen").toString()
 
+                    // Con esta configuración abrira Google Maps justo en la zona que indique el anuncio:
                     findViewById<TextView>(R.id.noticeZoneTextView).setOnClickListener {
                         val url = "https://www.google.com/maps/search/?api=1&query=" + document.getString("zonaDesaparicion").toString()
                         val webView = Intent(Intent.ACTION_VIEW, Uri.parse(url))
@@ -56,22 +52,22 @@ class NoticeActivity : AppCompatActivity() {
                     }
                 }
 
+                // Configuración de la imagen:
                 try {
                     if(imagenPerro != null) {
                         Picasso.get().load(imagenPerro).fit().into(dogImage)
                     } else {
                         println("GD---> ERROR REPORT: imagenPerro está llegando nulo")
+                        Toast.makeText(this, "¡Ups... ha habido algún problema con la imagen!", Toast.LENGTH_SHORT).show()
                     }
                 } catch (e: Exception) {
                     println("GD---> ERROR REPORT: ${e}")
+                    Toast.makeText(this, "¡Ups... ha habido algún problema con la imagen!", Toast.LENGTH_SHORT).show()
                 }
 
             }.addOnFailureListener { exception ->
                 println("GD---> ERROR REPORT: $exception")
+                Toast.makeText(this, "¡Ups... ha habido algún problema al cargar tu anuncio!", Toast.LENGTH_SHORT).show()
             }
-
     }
-
-
-
 }

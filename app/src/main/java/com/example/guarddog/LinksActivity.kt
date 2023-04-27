@@ -10,9 +10,8 @@ import com.google.firebase.FirebaseApp
 import com.google.firebase.firestore.FirebaseFirestore
 
 class LinksActivity : AppCompatActivity() {
+    // Vars:
     val linkList = ArrayList<LinksModel>()
-
-    // Creación/ actualización del usuario en Firestore Data Base
     val db = FirebaseFirestore.getInstance()
     val refLinks = db.collection("links")
 
@@ -23,7 +22,7 @@ class LinksActivity : AppCompatActivity() {
         FirebaseFirestore.setLoggingEnabled(true)
         FirebaseApp.initializeApp(this)
 
-        // Obtención de anuncios de Firestore
+        // Obtención de Links de Firestore:
         refLinks.get().addOnSuccessListener { result ->
             for (document in result) {
                 var linkModel = LinksModel(
@@ -33,9 +32,7 @@ class LinksActivity : AppCompatActivity() {
                 )
                 linkList.add(linkModel)
 
-                println(
-                    "GD---> DOCUMENT INFO:\n web = ${linkModel.web} \n nombre = ${linkModel.nombre} \n descripcion = ${linkModel.descripcion}"
-                )
+                println("GD---> DOCUMENT INFO:\n web = ${linkModel.web} \n nombre = ${linkModel.nombre} \n descripcion = ${linkModel.descripcion}")
             }
 
             addRowsToTable(linkList)
@@ -50,12 +47,14 @@ class LinksActivity : AppCompatActivity() {
     private fun setup() {
         val backButton = findViewById<Button>(R.id.backButton)
 
+        // Boton volver:
         backButton.setOnClickListener {
             val principalActivity = Intent(this, PrincipalActivity::class.java)
             startActivity(principalActivity)
         }
     }
 
+    // Configuración TableRows:
     private fun inflateTableRow(web: String, nombre: String, descripcion: String): TableRow {
         val tableRow = LayoutInflater.from(this).inflate(R.layout.link_row_layout, null) as TableRow
 
@@ -63,6 +62,7 @@ class LinksActivity : AppCompatActivity() {
         tableRow.findViewById<TextView>(R.id.nameRow).text = nombre
         tableRow.findViewById<TextView>(R.id.descripcionRow).text = descripcion
 
+        // Con esto abriremos un web view que nos llevará a la web del link:
         tableRow.findViewById<TextView>(R.id.webRow).setOnClickListener {
             val url = web
             val webView = Intent(Intent.ACTION_VIEW, Uri.parse(url))
@@ -74,6 +74,7 @@ class LinksActivity : AppCompatActivity() {
         return tableRow
     }
 
+    // Configuración TableLayout:
     private fun addRowsToTable(rowList: List<LinksModel>) {
         val tableLayout = findViewById<TableLayout>(R.id.idTableLayoutLinks)
         for (row in rowList) {

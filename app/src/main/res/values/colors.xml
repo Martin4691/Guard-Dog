@@ -9,5 +9,8 @@
     <color name="white">#FFFFFFFF</color>
     <color name="colorSplashBackground">#8BC34A</color>
     <color name="colorSplashBackground2">#4CAF50</color>
-    <color name="logout">#FF8F00</color>
+    <color name="back">#FF9100</color>
+    <color name="destructive">#DF0A0A</color>
+    <color name="alternative">#2979FF</color>
+    <color name="alternative_link">#00B0FF</color>
 </resources>

@@ -66,13 +66,13 @@
             <Button
                 android:id="@+id/signupButton"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
                 android:layout_weight="1"
-                android:background="@color/colorSplashBackground2"
+                android:background="@drawable/alternative"
                 android:text="REGISTRAR"
                 android:textColor="@color/white"
                 android:textStyle="bold"
-                tools:ignore="TextContrastCheck" />
+                tools:ignore="TextContrastCheck,TouchTargetSizeCheck" />
 
             <Space
                 android:layout_width="15dp"
@@ -81,12 +81,13 @@
             <Button
                 android:id="@+id/loginButton"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
                 android:layout_weight="1"
-                android:background="@color/purple_500"
+                android:background="@drawable/rounded_corners"
                 android:text="ACCEDER"
                 android:textColor="@color/white"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                tools:ignore="TouchTargetSizeCheck" />
 
         </LinearLayout>
 
@@ -109,11 +110,17 @@
         <Button
             android:id="@+id/googleButton"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="75dp"
+            android:layout_marginEnd="75dp"
+            android:background="@drawable/google"
+            android:foregroundGravity="center"
+            android:text="Google"
             android:textAlignment="center"
-            android:textStyle="bold"
-            app:icon="@mipmap/google_completo"
-            tools:ignore="SpeakableTextPresentCheck" />
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="30sp"
+            android:textStyle="bold" />
 
         <ImageView
             android:id="@+id/imageView"

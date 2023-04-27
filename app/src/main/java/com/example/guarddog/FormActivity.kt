@@ -20,9 +20,7 @@ class FormActivity : AppCompatActivity() {
         supportActionBar?.hide()
 
         // Setup:
-        val bundle: Bundle? = intent.extras
-        val email: String? = bundle?.getString("email")
-        setup(email ?: "No email")
+        setup(userModel.email)
 
     }
 
@@ -36,36 +34,35 @@ class FormActivity : AppCompatActivity() {
         var formDate = findViewById<EditText>(R.id.editTextDate)
         var formEmail = findViewById<TextView>(R.id.labelEmailLogInTV)
         var formDescription = findViewById<EditText>(R.id.editTextDescription)
-        var createNoticeButton = findViewById<Button>(R.id.createNoticeButton)
-     //   formEmail.text = email
-        formEmail.text = userModel.email
-
-
+        formEmail.text = email
 
         createButton.setOnClickListener {
-            selectedNoticeModel = NoticesModel(
+            // Creación de modelo de noticia:
+            var newNotice = NoticesModel(
                 nombrePerro = formNameDog.text.toString(),
                 nombreDueno = formNameOwner.text.toString(),
                 zonaDesaparicion = formZone.text.toString(),
                 diaDesaparicion = formDate.text.toString(),
                 email = formEmail.text.toString(),
                 telefono = formTelephone.text.toString(),
-                imagenPerro = "ESTO ESTA A PRUEBA",
+                imagenPerro = "No image", //msm: TO DO: meter la imagen aqui
                 observaciones = formDescription.text.toString()
             )
 
-            if (selectedNoticeModel.nombrePerro.isBlank() ||
-                selectedNoticeModel.nombreDueno.isBlank() ||
-                selectedNoticeModel.zonaDesaparicion.isBlank() ||
-                selectedNoticeModel.diaDesaparicion.isBlank() ||
-                selectedNoticeModel.email.isBlank() ||
-                selectedNoticeModel.telefono.isBlank() ||
-                selectedNoticeModel.observaciones.isBlank() ||
-                selectedNoticeModel.imagenPerro.isBlank()) {
-                // Show error message
+            // Comprobación que no falte nada por rellenar:
+            if (newNotice.nombrePerro.isBlank() ||
+                newNotice.nombreDueno.isBlank() ||
+                newNotice.zonaDesaparicion.isBlank() ||
+                newNotice.diaDesaparicion.isBlank() ||
+                newNotice.email.isBlank() ||
+                newNotice.telefono.isBlank() ||
+                newNotice.observaciones.isBlank() ||
+                newNotice.imagenPerro.isBlank()) {
+                // Aviso sí falta algún campo por rellenar:
                 Toast.makeText(this, "¡Todos los campos son obligatorios!", Toast.LENGTH_SHORT).show()
             }  else {
-                createNotice(selectedNoticeModel)
+                // Llamada al método de ceración:
+                createNotice(newNotice)
             }
         }
     }
@@ -83,6 +80,7 @@ class FormActivity : AppCompatActivity() {
             "observaciones" to noticeToSave.observaciones
         )
 
+        // Creación de la noticia en Firebase con id personalizado:
         db.collection("notices")
             .document(userModel.email + "-" + noticeToSave.nombrePerro)
             .set(noticeMap)
@@ -95,12 +93,13 @@ class FormActivity : AppCompatActivity() {
             }
     }
 
+    // Creación de un AlertDialog que avise de problemas para crear el usuario:
     private fun showAlert() {
         val builder = AlertDialog.Builder(this)
         builder.setTitle("¡Ups...!")
-        builder.setMessage("Se ha producido un error al crear el usuario.\nRevise su conexión a internet o inténtelo más tarde.")
+        builder.setMessage("Se ha producido un error al crear el anuncio.\nRevise su conexión a internet o inténtelo más tarde.")
         builder.setNegativeButton("Continuar") { _, _ ->
-            // Acción cuando se hace clic en el botón Aceptar
+            // Acción de volver a "mis anuncios" cuando se hace click en el botón Aceptar:
             val myNoticesActivity = Intent(this, MyNoticesActivity::class.java)
             startActivity(myNoticesActivity)
         }

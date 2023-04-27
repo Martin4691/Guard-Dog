@@ -34,6 +34,7 @@
                     android:background="#EAE7E7"
                     android:text="Nombre del perro:"
                     android:textAlignment="textStart"
+                    android:textColor="@color/black"
                     android:textStyle="bold" />
 
                 <EditText
@@ -51,6 +52,7 @@
                     android:layout_height="wrap_content"
                     android:background="#EAE7E7"
                     android:text="Nombre del dueño:"
+                    android:textColor="@color/black"
                     android:textStyle="bold" />
 
                 <EditText
@@ -68,6 +70,7 @@
                     android:layout_height="wrap_content"
                     android:background="#EAE7E7"
                     android:text="Email de contacto:"
+                    android:textColor="@color/black"
                     android:textStyle="bold" />
 
                 <TextView
@@ -87,6 +90,7 @@
                     android:layout_height="wrap_content"
                     android:background="#EAE7E7"
                     android:text="Teléfono de contacto:"
+                    android:textColor="@color/black"
                     android:textStyle="bold" />
 
                 <EditText
@@ -104,6 +108,7 @@
                     android:layout_height="wrap_content"
                     android:background="#EAE7E7"
                     android:text="Fecha de la desaparición:"
+                    android:textColor="@color/black"
                     android:textStyle="bold" />
 
                 <EditText
@@ -121,6 +126,7 @@
                     android:layout_height="wrap_content"
                     android:background="#EAE7E7"
                     android:text="Zona en la que desapareció:"
+                    android:textColor="@color/black"
                     android:textStyle="bold" />
 
                 <EditText
@@ -138,6 +144,7 @@
                     android:layout_height="wrap_content"
                     android:background="#EAE7E7"
                     android:text="Describa otros datos que puedan ayudar a localizar o identificar a su mascota:"
+                    android:textColor="@color/black"
                     android:textStyle="bold" />
 
                 <EditText
@@ -156,7 +163,12 @@
                     android:layout_height="wrap_content"
                     android:background="#EAE7E7"
                     android:text="Puede proporcionar una imagen del perro aquí:"
+                    android:textColor="@color/black"
                     android:textStyle="bold" />
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp" />
             </LinearLayout>
         </ScrollView>
 
@@ -164,8 +176,12 @@
             android:id="@+id/createNoticeButton"
             android:layout_width="match_parent"
             android:layout_height="50dp"
+            android:layout_marginBottom="15dp"
+            android:background="@drawable/rounded_corners"
             android:text="PUBLICAR ANUNCIO"
             android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="20sp"
             android:textStyle="bold" />
     </LinearLayout>
 

@@ -50,6 +50,7 @@ class AuthenticationActivity : AppCompatActivity() {
         authLayout.visibility = View.VISIBLE
     }
 
+    // Control de sesión:
     private fun session() {
         val authLayout = findViewById<LinearLayout>(R.id.authLayout)
         val prefs: SharedPreferences? = getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE)
@@ -70,10 +71,10 @@ class AuthenticationActivity : AppCompatActivity() {
         val emailEditText = findViewById<EditText>(R.id.emailEditText)
         val passwordEditText = findViewById<EditText>(R.id.passwordEditText)
 
+        // Registrarse:
         signupButton.setOnClickListener {
             if (emailEditText.text.isNotEmpty() && passwordEditText.text.isNotEmpty()) {
                 FirebaseAuth.getInstance().createUserWithEmailAndPassword(emailEditText.text.toString(),passwordEditText.text.toString()).addOnCompleteListener {
-
                     if (it.isSuccessful) {
                         goToPrincipal(it.result?.user?.email ?: "No data", ProviderType.BASIC)
                     } else {
@@ -83,10 +84,10 @@ class AuthenticationActivity : AppCompatActivity() {
             }
         }
 
+        // Iniciar sesión con email:
         loginButton.setOnClickListener {
             if (emailEditText.text.isNotEmpty() && passwordEditText.text.isNotEmpty()) {
                 FirebaseAuth.getInstance().signInWithEmailAndPassword(emailEditText.text.toString(),passwordEditText.text.toString()).addOnCompleteListener {
-
                     if (it.isSuccessful) {
                         goToPrincipal(it.result?.user?.email ?: "No data", ProviderType.BASIC)
                     } else {
@@ -96,6 +97,7 @@ class AuthenticationActivity : AppCompatActivity() {
             }
         }
 
+        // Iniciar sesión con la cuenta de Google (Botón):
         googleButton.setOnClickListener {
             val googleConf: GoogleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestIdToken(getString(R.string.default_web_client_id)).requestEmail().build()
             val googleClient: GoogleSignInClient = GoogleSignIn.getClient(this, googleConf)
@@ -115,6 +117,7 @@ class AuthenticationActivity : AppCompatActivity() {
         dialog.show()
     }
 
+    // Navegación siguiente pantalla:
     private fun goToPrincipal(email: String, provider: ProviderType) {
         val principalIntent = Intent(this, PrincipalActivity::class.java).apply {
             putExtra("email", email)
@@ -123,6 +126,7 @@ class AuthenticationActivity : AppCompatActivity() {
         startActivity(principalIntent)
     }
 
+    // Inicio de sesión con Google:
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
@@ -134,7 +138,6 @@ class AuthenticationActivity : AppCompatActivity() {
 
                 if(account != null) {
                     val credential: AuthCredential = GoogleAuthProvider.getCredential(account.idToken, null)
-
                     FirebaseAuth.getInstance().signInWithCredential(credential).addOnCompleteListener {
                         if (it.isSuccessful) {
                             goToPrincipal(account.email ?: "No email in account.", ProviderType.GOOGLE)

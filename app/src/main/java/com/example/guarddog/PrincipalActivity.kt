@@ -1,3 +1,7 @@
+// Guard Dog
+// Autor: Martín Sánchez Martínez
+// Fecha: 6 de Abril de 2023
+
 package com.example.guarddog
 
 import android.annotation.SuppressLint
@@ -78,7 +82,11 @@ class PrincipalActivity : AppCompatActivity() {
             }
             addRowsToTable(noticesList)
         }.addOnFailureListener { exception ->
-            Toast.makeText(this, "¡Ups... estamos teniendo problemas para cargar los anuncios!", Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                this,
+                "¡Ups... estamos teniendo problemas para cargar los anuncios!",
+                Toast.LENGTH_SHORT
+            ).show()
             println("GD Control---> ERROR:\n exception = $exception")
         }
     }
@@ -97,7 +105,8 @@ class PrincipalActivity : AppCompatActivity() {
         // Botones de navegación:
         logoutButton.setOnClickListener {
             // Borrado de datos:
-            val prefs: SharedPreferences.Editor = getSharedPreferences(getString(R.string.prefs_file),Context.MODE_PRIVATE).edit()
+            val prefs: SharedPreferences.Editor =
+                getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE).edit()
             prefs.clear()
             prefs.apply()
 
@@ -116,26 +125,26 @@ class PrincipalActivity : AppCompatActivity() {
         myNoticeButton.setOnClickListener {
             // Navegación a la pantalla mis anuncios:
             val myNoticesActivity = Intent(this, MyNoticesActivity::class.java).apply {
-            // Reseteo del selectedNoticeModel para evitar conflictos
-            selectedNoticeModel = NoticesModel(
-                nombrePerro = "",
-                nombreDueno = "",
-                zonaDesaparicion = "",
-                diaDesaparicion = "",
-                email = "",
-                telefono = "",
-                imagenPerro = "",
-                observaciones = ""
-            )
-        }
+                // Reseteo del selectedNoticeModel para evitar conflictos
+                selectedNoticeModel = NoticesModel(
+                    nombrePerro = "",
+                    nombreDueno = "",
+                    zonaDesaparicion = "",
+                    diaDesaparicion = "",
+                    email = "",
+                    telefono = "",
+                    imagenPerro = "",
+                    observaciones = ""
+                )
+            }
             startActivity(myNoticesActivity)
         }
-
     }
 
     // Configuración del TableRow
     private fun inflateTableRow(notice: NoticesModel): TableRow {
-        val tableRow = LayoutInflater.from(this).inflate(R.layout.notice_row_layout, null) as TableRow
+        val tableRow =
+            LayoutInflater.from(this).inflate(R.layout.notice_row_layout, null) as TableRow
 
         val dogImage = tableRow.findViewById<ImageView>(R.id.rowImageView)
 
@@ -148,15 +157,23 @@ class PrincipalActivity : AppCompatActivity() {
 
         // Configuración de la imagen:
         try {
-            if(notice.imagenPerro != null) {
+            if (notice.imagenPerro != null) {
                 Picasso.get().load(notice.imagenPerro).fit().into(dogImage)
             } else {
                 println("GD Control---> ERROR: función inflateTableRow/if -> imagenPerro está llegando nulo")
-                Toast.makeText(this, "¡Ups... ha habido algún problema con la imagen!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    this,
+                    "¡Ups... ha habido algún problema con la imagen!",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         } catch (e: Exception) {
             println("GD---> ERROR: Exception catch imagenPerro=> $e")
-            Toast.makeText(this, "¡Ups... ha habido algún problema con la imagen!", Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                this,
+                "¡Ups... ha habido algún problema con la imagen!",
+                Toast.LENGTH_SHORT
+            ).show()
         }
 
         return tableRow
@@ -172,7 +189,7 @@ class PrincipalActivity : AppCompatActivity() {
             tableRow.setOnClickListener {
                 selectedNoticeModel = notice
                 val noticeActivity = Intent(this, NoticeActivity::class.java)
-            startActivity(noticeActivity)
+                startActivity(noticeActivity)
             }
             tableLayout.addView(tableRow)
         }

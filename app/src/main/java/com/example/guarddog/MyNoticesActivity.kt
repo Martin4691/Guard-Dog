@@ -1,3 +1,7 @@
+// Guard Dog
+// Autor: Martín Sánchez Martínez
+// Fecha: 6 de Abril de 2023
+
 package com.example.guarddog
 
 import android.content.Intent
@@ -45,7 +49,11 @@ class MyNoticesActivity : AppCompatActivity() {
 
             addRowsToTable(myNoticesList)
         }.addOnFailureListener { exception ->
-            Toast.makeText(this, "¡Ups... ha habido algún problema al cargar tus anuncios!", Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                this,
+                "¡Ups... ha habido algún problema al cargar tus anuncios!",
+                Toast.LENGTH_SHORT
+            ).show()
             println("GD---> ERROR REPORT:\n exception = $exception")
         }
 
@@ -88,7 +96,8 @@ class MyNoticesActivity : AppCompatActivity() {
 
     // Configuración TableRows:
     private fun inflateTableRow(selectedNotice: NoticesModel): TableRow {
-        val tableRow = LayoutInflater.from(this).inflate(R.layout.my_notice_row_layout, null) as TableRow
+        val tableRow =
+            LayoutInflater.from(this).inflate(R.layout.my_notice_row_layout, null) as TableRow
         var rowSelectedName = tableRow.findViewById<TextView>(R.id.myDogNameTextView)
         rowSelectedName.text = selectedNotice.nombrePerro
 
@@ -117,16 +126,16 @@ class MyNoticesActivity : AppCompatActivity() {
 
         // Pero si clica en "Nombre:" o el nombre del perro abrira el anuncio a pantalla completa:
         rowSelectedName.setOnClickListener {
-                selectedNoticeModel.nombrePerro = selectedNotice.nombrePerro
-                val noticeActivity = Intent(this, NoticeActivity::class.java)
-                startActivity(noticeActivity)
-            }
+            selectedNoticeModel.nombrePerro = selectedNotice.nombrePerro
+            val noticeActivity = Intent(this, NoticeActivity::class.java)
+            startActivity(noticeActivity)
+        }
 
         tableRow.findViewById<TextView>(R.id.myNoticeLabelTV).setOnClickListener {
-                selectedNoticeModel.nombrePerro = selectedNotice.nombrePerro
-                val noticeActivity = Intent(this, NoticeActivity::class.java)
-                startActivity(noticeActivity)
-            }
+            selectedNoticeModel.nombrePerro = selectedNotice.nombrePerro
+            val noticeActivity = Intent(this, NoticeActivity::class.java)
+            startActivity(noticeActivity)
+        }
 
         return tableRow
     }

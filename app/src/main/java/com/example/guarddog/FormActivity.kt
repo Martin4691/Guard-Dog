@@ -1,3 +1,7 @@
+// Guard Dog
+// Autor: Martín Sánchez Martínez
+// Fecha: 6 de Abril de 2023
+
 package com.example.guarddog
 
 import android.content.Intent
@@ -21,7 +25,6 @@ class FormActivity : AppCompatActivity() {
 
         // Setup:
         setup(userModel.email)
-
     }
 
 
@@ -57,13 +60,21 @@ class FormActivity : AppCompatActivity() {
                 newNotice.email.isBlank() ||
                 newNotice.telefono.isBlank() ||
                 newNotice.observaciones.isBlank() ||
-                newNotice.imagenPerro.isBlank()) {
+                newNotice.imagenPerro.isBlank()
+            ) {
                 // Aviso sí falta algún campo por rellenar:
-                Toast.makeText(this, "¡Todos los campos son obligatorios!", Toast.LENGTH_SHORT).show()
-            }  else {
+                Toast.makeText(this, "¡Todos los campos son obligatorios!", Toast.LENGTH_SHORT)
+                    .show()
+            } else {
                 // Llamada al método de ceración:
                 createNotice(newNotice)
             }
+        }
+
+        // Boton volver:
+        findViewById<Button>(R.id.botonVolver).setOnClickListener {
+            val misAnuncios = Intent(this, MyNoticesActivity::class.java)
+            startActivity(misAnuncios)
         }
     }
 

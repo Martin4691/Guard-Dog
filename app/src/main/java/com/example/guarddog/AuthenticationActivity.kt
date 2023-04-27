@@ -1,3 +1,7 @@
+// Guard Dog
+// Autor: Martín Sánchez Martínez
+// Fecha: 6 de Abril de 2023
+
 package com.example.guarddog
 
 import android.content.Context
@@ -34,10 +38,10 @@ class AuthenticationActivity : AppCompatActivity() {
         supportActionBar?.hide()
 
         // Analytics Event:
-        val analytics:FirebaseAnalytics = FirebaseAnalytics.getInstance(this)
+        val analytics: FirebaseAnalytics = FirebaseAnalytics.getInstance(this)
         val bundle = Bundle()
         bundle.putString("autenticacion", "Pantalla de Autenticación")
-        analytics.logEvent("InitScreen",bundle)
+        analytics.logEvent("InitScreen", bundle)
 
         //Setup
         setup()
@@ -53,12 +57,13 @@ class AuthenticationActivity : AppCompatActivity() {
     // Control de sesión:
     private fun session() {
         val authLayout = findViewById<LinearLayout>(R.id.authLayout)
-        val prefs: SharedPreferences? = getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE)
+        val prefs: SharedPreferences? =
+            getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE)
         val email: String? = prefs?.getString("email", null)
         val provider: String? = prefs?.getString("provider", null)
 
         // Si el usuario no cerró hizo logout, no tendrá que volver a hacer login.
-        if(email != null && provider != null) {
+        if (email != null && provider != null) {
             authLayout.visibility = View.INVISIBLE
             goToPrincipal(email, ProviderType.valueOf(provider))
         }
@@ -74,7 +79,10 @@ class AuthenticationActivity : AppCompatActivity() {
         // Registrarse:
         signupButton.setOnClickListener {
             if (emailEditText.text.isNotEmpty() && passwordEditText.text.isNotEmpty()) {
-                FirebaseAuth.getInstance().createUserWithEmailAndPassword(emailEditText.text.toString(),passwordEditText.text.toString()).addOnCompleteListener {
+                FirebaseAuth.getInstance().createUserWithEmailAndPassword(
+                    emailEditText.text.toString(),
+                    passwordEditText.text.toString()
+                ).addOnCompleteListener {
                     if (it.isSuccessful) {
                         goToPrincipal(it.result?.user?.email ?: "No data", ProviderType.BASIC)
                     } else {
@@ -87,7 +95,10 @@ class AuthenticationActivity : AppCompatActivity() {
         // Iniciar sesión con email:
         loginButton.setOnClickListener {
             if (emailEditText.text.isNotEmpty() && passwordEditText.text.isNotEmpty()) {
-                FirebaseAuth.getInstance().signInWithEmailAndPassword(emailEditText.text.toString(),passwordEditText.text.toString()).addOnCompleteListener {
+                FirebaseAuth.getInstance().signInWithEmailAndPassword(
+                    emailEditText.text.toString(),
+                    passwordEditText.text.toString()
+                ).addOnCompleteListener {
                     if (it.isSuccessful) {
                         goToPrincipal(it.result?.user?.email ?: "No data", ProviderType.BASIC)
                     } else {
@@ -99,7 +110,10 @@ class AuthenticationActivity : AppCompatActivity() {
 
         // Iniciar sesión con la cuenta de Google (Botón):
         googleButton.setOnClickListener {
-            val googleConf: GoogleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestIdToken(getString(R.string.default_web_client_id)).requestEmail().build()
+            val googleConf: GoogleSignInOptions =
+                GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                    .requestIdToken(getString(R.string.default_web_client_id)).requestEmail()
+                    .build()
             val googleClient: GoogleSignInClient = GoogleSignIn.getClient(this, googleConf)
 
             googleClient.signOut()
@@ -130,23 +144,28 @@ class AuthenticationActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if(requestCode == GOOGLE_SIGN_IN) {
-            val task:Task<GoogleSignInAccount> = GoogleSignIn.getSignedInAccountFromIntent(data)
+        if (requestCode == GOOGLE_SIGN_IN) {
+            val task: Task<GoogleSignInAccount> = GoogleSignIn.getSignedInAccountFromIntent(data)
 
             try {
                 val account: GoogleSignInAccount? = task.getResult(ApiException::class.java)
 
-                if(account != null) {
-                    val credential: AuthCredential = GoogleAuthProvider.getCredential(account.idToken, null)
-                    FirebaseAuth.getInstance().signInWithCredential(credential).addOnCompleteListener {
-                        if (it.isSuccessful) {
-                            goToPrincipal(account.email ?: "No email in account.", ProviderType.GOOGLE)
-                        } else {
-                            showAlert()
+                if (account != null) {
+                    val credential: AuthCredential =
+                        GoogleAuthProvider.getCredential(account.idToken, null)
+                    FirebaseAuth.getInstance().signInWithCredential(credential)
+                        .addOnCompleteListener {
+                            if (it.isSuccessful) {
+                                goToPrincipal(
+                                    account.email ?: "No email in account.",
+                                    ProviderType.GOOGLE
+                                )
+                            } else {
+                                showAlert()
+                            }
                         }
-                    }
                 }
-            } catch(error: ApiException) {
+            } catch (error: ApiException) {
                 showAlert()
             }
         }

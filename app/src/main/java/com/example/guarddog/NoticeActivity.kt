@@ -1,3 +1,7 @@
+// Guard Dog
+// Autor: Martín Sánchez Martínez
+// Fecha: 6 de Abril de 2023
+
 package com.example.guarddog
 
 import android.content.Intent
@@ -34,18 +38,28 @@ class NoticeActivity : AppCompatActivity() {
             .get()
             .addOnSuccessListener { documents ->
                 for (document in documents) {
-                    findViewById<TextView>(R.id.noticeDogNameTextView).text = document.getString("nombrePerro").toString()
-                    findViewById<TextView>(R.id.noticeOwnerTextView).text = document.getString("nombreDueno").toString()
-                    findViewById<TextView>(R.id.noticeDateTextView).text = document.getString("diaDesaparicion").toString()
-                    findViewById<TextView>(R.id.noticeZoneTextView).text = document.getString("zonaDesaparicion").toString()
-                    findViewById<TextView>(R.id.noticeTelTextView).text = document.getString("telefono").toString()
-                    findViewById<TextView>(R.id.noticeEmailTextView).text = document.getString("email").toString()
-                    findViewById<TextView>(R.id.noticeDescriptionTextView).text = document.getString("observaciones").toString()
+                    findViewById<TextView>(R.id.noticeDogNameTextView).text =
+                        document.getString("nombrePerro").toString()
+                    findViewById<TextView>(R.id.noticeOwnerTextView).text =
+                        document.getString("nombreDueno").toString()
+                    findViewById<TextView>(R.id.noticeDateTextView).text =
+                        document.getString("diaDesaparicion").toString()
+                    findViewById<TextView>(R.id.noticeZoneTextView).text =
+                        document.getString("zonaDesaparicion").toString()
+                    findViewById<TextView>(R.id.noticeTelTextView).text =
+                        document.getString("telefono").toString()
+                    findViewById<TextView>(R.id.noticeEmailTextView).text =
+                        document.getString("email").toString()
+                    findViewById<TextView>(R.id.noticeDescriptionTextView).text =
+                        document.getString("observaciones").toString()
                     imagenPerro = document.getString("imagen").toString()
 
                     // Con esta configuración abrira Google Maps justo en la zona que indique el anuncio:
                     findViewById<TextView>(R.id.noticeZoneTextView).setOnClickListener {
-                        val url = "https://www.google.com/maps/search/?api=1&query=" + document.getString("zonaDesaparicion").toString()
+                        val url =
+                            "https://www.google.com/maps/search/?api=1&query=" + document.getString(
+                                "zonaDesaparicion"
+                            ).toString()
                         val webView = Intent(Intent.ACTION_VIEW, Uri.parse(url))
 
                         startActivity(webView)
@@ -54,20 +68,32 @@ class NoticeActivity : AppCompatActivity() {
 
                 // Configuración de la imagen:
                 try {
-                    if(imagenPerro != null) {
+                    if (imagenPerro != null) {
                         Picasso.get().load(imagenPerro).fit().into(dogImage)
                     } else {
                         println("GD---> ERROR REPORT: imagenPerro está llegando nulo")
-                        Toast.makeText(this, "¡Ups... ha habido algún problema con la imagen!", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            this,
+                            "¡Ups... ha habido algún problema con la imagen!",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                 } catch (e: Exception) {
                     println("GD---> ERROR REPORT: ${e}")
-                    Toast.makeText(this, "¡Ups... ha habido algún problema con la imagen!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        this,
+                        "¡Ups... ha habido algún problema con la imagen!",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
 
             }.addOnFailureListener { exception ->
                 println("GD---> ERROR REPORT: $exception")
-                Toast.makeText(this, "¡Ups... ha habido algún problema al cargar tu anuncio!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    this,
+                    "¡Ups... ha habido algún problema al cargar tu anuncio!",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
     }
 }

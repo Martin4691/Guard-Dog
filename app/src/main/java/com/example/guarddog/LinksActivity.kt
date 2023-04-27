@@ -1,3 +1,7 @@
+// Guard Dog
+// Autor: Martín Sánchez Martínez
+// Fecha: 6 de Abril de 2023
+
 package com.example.guarddog
 
 import android.content.Intent
@@ -37,8 +41,8 @@ class LinksActivity : AppCompatActivity() {
 
             addRowsToTable(linkList)
         }.addOnFailureListener { exception ->
-                println("GD---> ERROR REPORT:\n exception = $exception")
-            }
+            println("GD---> ERROR REPORT:\n exception = $exception")
+        }
 
         // Setup
         setup()
@@ -78,10 +82,10 @@ class LinksActivity : AppCompatActivity() {
     private fun addRowsToTable(rowList: List<LinksModel>) {
         val tableLayout = findViewById<TableLayout>(R.id.idTableLayoutLinks)
         for (row in rowList) {
-            val tableRow = inflateTableRow(web = row.web, nombre = row.nombre, descripcion = row.descripcion)
+            val tableRow =
+                inflateTableRow(web = row.web, nombre = row.nombre, descripcion = row.descripcion)
             println("msm: addRowsToTable => web = $row.web --- nombre = $row.nombre --- descripcion = $row.descripcion")
             tableLayout.addView(tableRow)
         }
     }
-
 }

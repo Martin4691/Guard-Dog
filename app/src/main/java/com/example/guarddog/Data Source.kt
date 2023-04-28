@@ -4,6 +4,11 @@
 
 package com.example.guarddog
 
+enum class ProviderType() {
+    BASIC,
+    GOOGLE
+}
+
 class NoticesModel(
     var nombrePerro: String,
     var nombreDueno: String,
@@ -23,13 +28,15 @@ class LinksModel(
 
 class UserModel(
     var email: String,
-    var uid: String
+    var uid: String,
+    var provider: ProviderType?
 )
 
 // Model del usuario que hace el login:
 var userModel = UserModel(
     email = "",
-    uid = ""
+    uid = "",
+    provider = null
 )
 
 // Model de la noticia que se seleccionado (o creado en la FormActivity):

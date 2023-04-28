@@ -62,7 +62,8 @@ class AuthenticationActivity : AppCompatActivity() {
         val email: String? = prefs?.getString("email", null)
         val provider: String? = prefs?.getString("provider", null)
 
-        // Si el usuario no cerró hizo logout, no tendrá que volver a hacer login.
+        // Si el usuario cierra la app sin hacerlogout,
+        // al abrirla de nuevo no tendrá que volver a hacer login.
         if (email != null && provider != null) {
             authLayout.visibility = View.INVISIBLE
             goToPrincipal(email, ProviderType.valueOf(provider))
@@ -133,10 +134,10 @@ class AuthenticationActivity : AppCompatActivity() {
 
     // Navegación siguiente pantalla:
     private fun goToPrincipal(email: String, provider: ProviderType) {
-        val principalIntent = Intent(this, PrincipalActivity::class.java).apply {
-            putExtra("email", email)
-            putExtra("provider", provider.name)
-        }
+        userModel.email = email
+        userModel.provider = provider
+        println("GD Control---> Authentication params: email = ${userModel.email}, provider = ${userModel.provider}")
+        val principalIntent = Intent(this, PrincipalActivity::class.java)
         startActivity(principalIntent)
     }
 

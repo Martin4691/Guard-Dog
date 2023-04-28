@@ -126,13 +126,13 @@ class MyNoticesActivity : AppCompatActivity() {
 
         // Pero si clica en "Nombre:" o el nombre del perro abrira el anuncio a pantalla completa:
         rowSelectedName.setOnClickListener {
-            selectedNoticeModel.nombrePerro = selectedNotice.nombrePerro
+            selectedNoticeModel = selectedNotice
             val noticeActivity = Intent(this, NoticeActivity::class.java)
             startActivity(noticeActivity)
         }
 
         tableRow.findViewById<TextView>(R.id.myNoticeLabelTV).setOnClickListener {
-            selectedNoticeModel.nombrePerro = selectedNotice.nombrePerro
+            selectedNoticeModel = selectedNotice
             val noticeActivity = Intent(this, NoticeActivity::class.java)
             startActivity(noticeActivity)
         }

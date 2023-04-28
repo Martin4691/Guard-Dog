@@ -19,12 +19,6 @@ import android.view.LayoutInflater
 import android.widget.*
 import com.squareup.picasso.Picasso
 
-
-enum class ProviderType() {
-    BASIC,
-    GOOGLE
-}
-
 class PrincipalActivity : AppCompatActivity() {
     @SuppressLint("StringFormatInvalid")
     val noticesList = ArrayList<NoticesModel>()
@@ -37,31 +31,28 @@ class PrincipalActivity : AppCompatActivity() {
         FirebaseApp.initializeApp(this)
 
         // Setup:
-        val bundle: Bundle? = intent.extras
-        val email: String? = bundle?.getString("email")
-        val provider: String? = bundle?.getString("provider")
-        setup(email ?: "No email")
+        setup(userModel.email ?: "No email")
 
         // Guardado de datos del usuario:
-        // (email y que opción eligió para el inici de sesión)
+        // (email y que opción eligió para el inicio de sesión)
         val prefs: SharedPreferences.Editor =
             getSharedPreferences(getString(R.string.prefs_file), Context.MODE_PRIVATE).edit()
-        prefs.putString("email", email)
-        prefs.putString("provider", provider)
+        prefs.putString("email", userModel.email)
+        prefs.putString("provider", userModel.provider.toString())
         prefs.apply()
 
         // Creación/ actualización del usuario en Firebase:
         val userAuthenticated = Firebase.auth.currentUser
         val userUID = userAuthenticated?.uid
-        userModel.email = email.toString()
-        val user = hashMapOf("email" to email, "id" to userUID)
+        userModel.uid = userUID.toString()
+        val user = hashMapOf("email" to userModel.email, "id" to userModel.uid)
 
         // Variables Firebase:
         val db = FirebaseFirestore.getInstance()
 
         val refNotices = db.collection("notices")
 
-        println("GD Control---> USER: El userUID es: " + userUID + ", El email es: " + email)
+        println("GD Control---> USER: El userUID es: " + userUID + ", El email es: " + userModel.email)
 
 
         // Obtención de anuncios de Firestore:

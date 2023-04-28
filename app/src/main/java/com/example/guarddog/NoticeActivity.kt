@@ -23,7 +23,7 @@ class NoticeActivity : AppCompatActivity() {
         setContentView(R.layout.activity_notice)
         supportActionBar?.hide()
 
-        setup(userModel.email ?: "No email", selectedNoticeModel.nombrePerro ?: "No dogName")
+        setup(selectedNoticeModel.email ?: "No email", selectedNoticeModel.nombrePerro ?: "No dogName")
     }
 
 

@@ -4,19 +4,39 @@
 
 package com.example.guarddog
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
+import com.squareup.picasso.Picasso
+import java.io.File
 
 class FormActivity : AppCompatActivity() {
-    //   var formImage = findViewById<>(R.id.)
+    companion object {
+        private const val REQUEST_CODE = 1
+        private const val REQUEST_CODE_WRITE_EXTERNAL_STORAGE_PERMISSION = 11
+    }
+
+    val storage = FirebaseStorage.getInstance()
+    var storageRef = storage.reference
+    private lateinit var imageUri: Uri
+    var imageUriToString: String = ""
+    var imageUriPath = File("")
+    var downloadURL = ""
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,6 +45,18 @@ class FormActivity : AppCompatActivity() {
 
         // Setup:
         setup(userModel.email)
+        if (ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.READ_EXTERNAL_STORAGE
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
+                1
+            )
+        }
+
     }
 
 
@@ -40,7 +72,7 @@ class FormActivity : AppCompatActivity() {
         formEmail.text = email
 
         createButton.setOnClickListener {
-            // Creación de modelo de noticia:
+            // Creación de modelo de anuncio a publicar:
             var newNotice = NoticesModel(
                 nombrePerro = formNameDog.text.toString(),
                 nombreDueno = formNameOwner.text.toString(),
@@ -48,7 +80,7 @@ class FormActivity : AppCompatActivity() {
                 diaDesaparicion = formDate.text.toString(),
                 email = formEmail.text.toString(),
                 telefono = formTelephone.text.toString(),
-                imagenPerro = "No image", //msm: TO DO: meter la imagen aqui
+                imagenPerro = downloadURL,
                 observaciones = formDescription.text.toString()
             )
 
@@ -76,6 +108,13 @@ class FormActivity : AppCompatActivity() {
             val misAnuncios = Intent(this, MyNoticesActivity::class.java)
             startActivity(misAnuncios)
         }
+
+        // Boton buscar imagen:
+        findViewById<Button>(R.id.bookImageButton).setOnClickListener {
+            val intent = Intent(Intent.ACTION_PICK)
+            intent.type = "image/*"
+            startActivityForResult(intent, REQUEST_CODE)
+        }
     }
 
     private fun createNotice(noticeToSave: NoticesModel) {
@@ -87,7 +126,7 @@ class FormActivity : AppCompatActivity() {
             "diaDesaparicion" to noticeToSave.diaDesaparicion,
             "email" to noticeToSave.email,
             "telefono" to noticeToSave.telefono,
-            "imagenPerro" to noticeToSave.imagenPerro,
+            "imagen" to noticeToSave.imagenPerro,
             "observaciones" to noticeToSave.observaciones
         )
 
@@ -116,6 +155,69 @@ class FormActivity : AppCompatActivity() {
         }
         val dialog: AlertDialog = builder.create()
         dialog.show()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        var imageView = findViewById<ImageView>(R.id.photoImageView)
+
+        if (requestCode == REQUEST_CODE && resultCode == RESULT_OK && data != null) {
+            imageUri = data.data!!
+            imageUriToString = imageUri.toString()
+            imageUriPath = File(imageUri?.path ?: "")
+
+            Picasso.get().load(imageUri).into(imageView)
+
+            uploadImage()
+        }
+    }
+
+    private fun uploadImage() {
+        var file = Uri.fromFile(File(imageUriPath.toString()))
+        val photoRef = storageRef.child("images/${file.lastPathSegment}")
+        var uploadTask = photoRef.putFile(imageUri)
+
+        uploadTask.addOnFailureListener {
+            println("GD Control---> ERROR REPORT FormsActivity: Problemas al subir la imagen en uploadImage()")
+        }.addOnSuccessListener { taskSnapshot ->
+            taskSnapshot.metadata.toString()
+            println("GD Control---> taskSnapshot.metadata = ${taskSnapshot.metadata.toString()}")
+        }
+
+        val urlTask = uploadTask.continueWithTask { task ->
+            if (!task.isSuccessful) {
+                task.exception?.let {
+                    throw it
+                }
+            }
+            photoRef.downloadUrl
+        }.addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                downloadURL = task.result.toString()
+                println("GD Control---> URL = $downloadURL")
+            } else {
+                println("GD Control---> ERROR REPORT FormsActivity: Problemas al intentar conseguir la URL en uploadImage()")
+            }
+        }
+    }
+
+    // Maneja la respuesta del usuario a través del método onRequestPermissionsResult()
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        when (requestCode) {
+            REQUEST_CODE_WRITE_EXTERNAL_STORAGE_PERMISSION -> {
+                // Si el usuario otorgó el permiso, realiza la acción necesaria
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    println("GD Control---> Permiso otorgado.")
+                } else {
+                    println("GD Control---> Permiso NO otorgado.")
+                    Toast.makeText(this, "Necesitamos tu consentimiento para ver tus imagenes y poder publicarlas en nuestra comunidad.", Toast.LENGTH_SHORT)
+                    val misAnuncios = Intent(this, MyNoticesActivity::class.java)
+                    startActivity(misAnuncios)
+                }
+                return
+            }
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 
 }

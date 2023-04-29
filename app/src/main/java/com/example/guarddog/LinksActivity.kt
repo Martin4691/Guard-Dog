@@ -73,7 +73,6 @@ class LinksActivity : AppCompatActivity() {
 
             startActivity(webView)
         }
-        println("msm: inflateTableRow => web = $web --- nombre = $nombre --- descripcion = $descripcion")
 
         return tableRow
     }
@@ -84,7 +83,6 @@ class LinksActivity : AppCompatActivity() {
         for (row in rowList) {
             val tableRow =
                 inflateTableRow(web = row.web, nombre = row.nombre, descripcion = row.descripcion)
-            println("msm: addRowsToTable => web = $row.web --- nombre = $row.nombre --- descripcion = $row.descripcion")
             tableLayout.addView(tableRow)
         }
     }

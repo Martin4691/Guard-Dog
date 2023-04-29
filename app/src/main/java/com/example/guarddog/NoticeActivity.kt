@@ -8,7 +8,6 @@ import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -32,6 +31,7 @@ class NoticeActivity : AppCompatActivity() {
         var dogImage = findViewById<ImageView>(R.id.dogNoticeImageView)
         val db = FirebaseFirestore.getInstance()
 
+        // Buscaremos en la BBDD el anuncio según nombre del perro y email de la cuenta que se ha logeado:
         db.collection("notices")
             .whereEqualTo("email", noticeEmail)
             .whereEqualTo("nombrePerro", noticeDogName)

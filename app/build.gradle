@@ -35,23 +35,20 @@ android {
 
 dependencies {
     // Firebase BoM
-    implementation platform('com.google.firebase:firebase-bom:31.3.0')
-    // Firebase platform
-    implementation platform('com.google.firebase:firebase-bom:31.2.3')
+    implementation platform('com.google.firebase:firebase-bom:31.4.0')
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.appcompat:appcompat:1.5.1'
     implementation 'com.google.android.material:material:1.7.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    // Firebase dependencies
-    implementation 'com.google.firebase:firebase-analytics-ktx'
-    // Firebase Authentication library
-    implementation 'com.google.firebase:firebase-auth-ktx'
-    // Cloud Firestore library
+    // Firebase dependencies:
     implementation 'com.google.firebase:firebase-firestore-ktx'
-    // Picasso
+    implementation 'com.google.firebase:firebase-storage-ktx'
+    implementation 'com.google.firebase:firebase-common-ktx:20.1.0'
+    implementation 'com.google.firebase:firebase-auth-ktx'
+    implementation 'com.google.firebase:firebase-analytics-ktx'
+    // Picasso dependencies:
     implementation 'com.squareup.picasso:picasso:2.71828'
     implementation 'com.google.android.gms:play-services-auth:20.5.0'
-    implementation 'com.google.firebase:firebase-common-ktx:20.1.0'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.4'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.0'

@@ -9,14 +9,12 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.widget.*
-import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.ktx.Firebase
 
 class MyNoticesActivity : AppCompatActivity() {
     val myNoticesList = ArrayList<NoticesModel>()
 
-    //Firestore:
+    //Firestore vars:
     val db = FirebaseFirestore.getInstance()
     val refNotices = db.collection("notices")
 
@@ -101,7 +99,7 @@ class MyNoticesActivity : AppCompatActivity() {
         var rowSelectedName = tableRow.findViewById<TextView>(R.id.myDogNameTextView)
         rowSelectedName.text = selectedNotice.nombrePerro
 
-        // Se le asignara la funcion de borrar al botón "Delete":
+        // Se le asignara la funcion de borrar al botón "deleteButton":
         tableRow.findViewById<Button>(R.id.deleteButton).setOnClickListener {
             val documentId = userModel.email + "-" + selectedNotice.nombrePerro
             val docRef = db.collection("notices").document(documentId)

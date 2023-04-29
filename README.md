@@ -2,7 +2,7 @@
 Mobile App help find lost dogs.
 
 Español:
-Esta APP la he realizado como mi proyecto de fin de GFPS como técnico DAM.
+Esta APP Nativa (Android Studio y Kotlin + Firebase) la he realizado como mi proyecto de fin de GFPS como técnico DAM.
 Se trata de una app que intenta crear una comunidad donde tanto personas que han perdido a sus peludos como personas que ven peludos por la calle y no les cuadra, tengan un punto de encuentro y puedan ayudarse mutuamente a que peludo y familia se encuentren.
 
 Es un MVP, así que tiene el diseño y las funcionalidades imprescindibles y básicas para cumplir con su función primando las buenas prácticas y que el proyecto sea escalable a futuro desde el minuto 0.

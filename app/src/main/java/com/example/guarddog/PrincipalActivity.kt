@@ -41,7 +41,7 @@ class PrincipalActivity : AppCompatActivity() {
         prefs.putString("provider", userModel.provider.toString())
         prefs.apply()
 
-        // Creación/ actualización del usuario en Firebase:
+        // Obtención UID + email del usuario en Firebase:
         val userAuthenticated = Firebase.auth.currentUser
         val userUID = userAuthenticated?.uid
         userModel.uid = userUID.toString()
@@ -49,11 +49,19 @@ class PrincipalActivity : AppCompatActivity() {
 
         // Variables Firebase:
         val db = FirebaseFirestore.getInstance()
-
         val refNotices = db.collection("notices")
 
         println("GD Control---> USER: El userUID es: " + userUID + ", El email es: " + userModel.email)
 
+        db.collection("users")
+            .document(userModel.email)
+            .set(user)
+            .addOnSuccessListener { documentReference ->
+                println("GD Control---> USER: El userUID es: " + userUID + ", El email es: " + userModel.email)
+            }
+            .addOnFailureListener { e ->
+                println("GD ERROR REPORT---> USER NO CREADO!!")
+            }
 
         // Obtención de anuncios de Firestore:
         refNotices.get().addOnSuccessListener { result ->

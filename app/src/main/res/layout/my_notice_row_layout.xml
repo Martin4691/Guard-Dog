@@ -35,15 +35,16 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/myDogNameTextView"
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:layout_weight="1"
-                android:background="#FFFFFF"
-                android:text="CHUCHO X"
-                android:textAlignment="center"
-                android:textSize="20dp"
-                android:textStyle="bold" />
+                    android:id="@+id/myDogNameTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_weight="1"
+                    android:background="#FFFFFF"
+                    android:text="CHUCHO X"
+                    android:textAlignment="center"
+                    android:textSize="20dp"
+                    android:textStyle="bold"
+                    android:textColor="#FF040303" />
         </LinearLayout>
 
         <Button

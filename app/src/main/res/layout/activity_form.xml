@@ -38,13 +38,15 @@
                     android:textStyle="bold" />
 
                 <EditText
-                    android:id="@+id/editTextDogName"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:hint="Escriba el nombre del perro..."
-                    android:inputType="textPersonName"
-                    tools:ignore="TouchTargetSizeCheck" />
+                        android:id="@+id/editTextDogName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:hint="Escriba el nombre del perro..."
+                        android:inputType="textPersonName"
+                        tools:ignore="TouchTargetSizeCheck"
+                        android:textColor="#FF040303"
+                        android:textColorHint="#FF040303" />
 
                 <TextView
                     android:id="@+id/labelOwnerTV"
@@ -56,13 +58,15 @@
                     android:textStyle="bold" />
 
                 <EditText
-                    android:id="@+id/editTextOwnerName"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:hint="Escriba su nombre..."
-                    android:inputType="textPersonName"
-                    tools:ignore="TouchTargetSizeCheck" />
+                        android:id="@+id/editTextOwnerName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:hint="Escriba su nombre..."
+                        android:inputType="textPersonName"
+                        tools:ignore="TouchTargetSizeCheck"
+                        android:textColor="#FF040303"
+                        android:textColorHint="#FF040303" />
 
                 <TextView
                     android:id="@+id/labelEmailTV"
@@ -74,11 +78,13 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/labelEmailLogInTV"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="No se pudo cargar el mail, pruebe a reiniciar la app."
-                    android:textSize="16sp" />
+                        android:id="@+id/labelEmailLogInTV"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="No se pudo cargar el mail, pruebe a reiniciar la app."
+                        android:textSize="16sp"
+                        android:textColor="#FF040303"
+                        android:textColorHint="#FF040303" />
 
                 <Space
                     android:layout_width="match_parent"
@@ -94,13 +100,15 @@
                     android:textStyle="bold" />
 
                 <EditText
-                    android:id="@+id/editTextTelephone"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:hint="Teléfono de contacto..."
-                    android:inputType="textPersonName"
-                    tools:ignore="TouchTargetSizeCheck" />
+                        android:id="@+id/editTextTelephone"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:hint="Teléfono de contacto..."
+                        android:inputType="textPersonName"
+                        tools:ignore="TouchTargetSizeCheck"
+                        android:textColor="#FF040303"
+                        android:textColorHint="#FF040303" />
 
                 <TextView
                     android:id="@+id/labelDateTV"
@@ -112,13 +120,15 @@
                     android:textStyle="bold" />
 
                 <EditText
-                    android:id="@+id/editTextDate"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:hint="Fecha"
-                    android:inputType="date"
-                    tools:ignore="TouchTargetSizeCheck" />
+                        android:id="@+id/editTextDate"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:hint="Fecha"
+                        android:inputType="date"
+                        tools:ignore="TouchTargetSizeCheck"
+                        android:textColor="#FF040303"
+                        android:textColorHint="#FF040303" />
 
                 <TextView
                     android:id="@+id/labelZoneTV"
@@ -130,13 +140,15 @@
                     android:textStyle="bold" />
 
                 <EditText
-                    android:id="@+id/editTextZone"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:hint="Escriba la zona donde desapareció..."
-                    android:inputType="textPersonName"
-                    tools:ignore="TouchTargetSizeCheck" />
+                        android:id="@+id/editTextZone"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:hint="Escriba la zona donde desapareció..."
+                        android:inputType="textPersonName"
+                        tools:ignore="TouchTargetSizeCheck"
+                        android:textColor="#FF040303"
+                        android:textColorHint="#FF040303" />
 
                 <TextView
                     android:id="@+id/labelDescTV"
@@ -148,14 +160,16 @@
                     android:textStyle="bold" />
 
                 <EditText
-                    android:id="@+id/editTextDescription"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:hint="Información de interés..."
-                    android:inputType="textPersonName"
-                    android:maxLines="10"
-                    tools:ignore="TouchTargetSizeCheck" />
+                        android:id="@+id/editTextDescription"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ems="10"
+                        android:hint="Información de interés..."
+                        android:inputType="textPersonName"
+                        android:maxLines="10"
+                        tools:ignore="TouchTargetSizeCheck"
+                        android:textColor="#FF040303"
+                        android:textColorHint="#FF040303" />
 
                 <TextView
                     android:id="@+id/labelImageTV"

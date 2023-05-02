@@ -22,26 +22,30 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <EditText
-            android:id="@+id/emailEditText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="Email"
-            android:inputType="textEmailAddress"
-            tools:ignore="TouchTargetSizeCheck" />
+                android:id="@+id/emailEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textEmailAddress"
+                tools:ignore="TouchTargetSizeCheck"
+                android:textColorHint="#020202"
+                android:hint="Email..."
+                android:textColor="#FF020202" />
 
         <Space
             android:layout_width="match_parent"
             android:layout_height="8dp" />
 
         <EditText
-            android:id="@+id/passwordEditText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="Contraseña"
-            android:inputType="textPassword"
-            tools:ignore="TouchTargetSizeCheck,TextContrastCheck" />
+                android:id="@+id/passwordEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="Contraseña..."
+                android:inputType="textPassword"
+                tools:ignore="TouchTargetSizeCheck,TextContrastCheck"
+                android:textColorHint="#FF020202"
+                android:textColor="#FF020202" />
 
         <Space
             android:layout_width="match_parent"

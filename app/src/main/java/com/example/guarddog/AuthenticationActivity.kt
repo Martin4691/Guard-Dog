@@ -41,7 +41,7 @@ class AuthenticationActivity : AppCompatActivity() {
         val analytics: FirebaseAnalytics = FirebaseAnalytics.getInstance(this)
         val bundle = Bundle()
         bundle.putString("autenticacion", "Pantalla de Autenticación")
-        analytics.logEvent("InitScreen", bundle)
+        analytics.logEvent("InitScree", bundle)
 
         //Setup
         setup()
